@@ -19,6 +19,8 @@ local_settings.py
 # Environments
 .env
 
+# Drawio
+*.drawio.bkp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

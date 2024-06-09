@@ -15,20 +15,15 @@ class RentStatus(Enum):
     COMPLETED = 'COMPLETED'
 
 
-class CustomerType(Enum):
-    PERSON = 'Person'
-    COMPANY = 'Company'
-
-
 class Customer(models.Model):
     RENT_STATUS_CHOICES = [(status.name, status.value) for status in RentStatus]
-    CUSTOMER_TYPE_CHOICES = [(customer_type.name, customer_type.value) for customer_type in CustomerType]
     id = models.AutoField(primary_key=True)
     address = models.CharField(max_length=255)
     customer_id = models.UUIDField(unique=True, default=uuid.uuid4)
     enabled = models.BooleanField(default=True)
     email = models.EmailField(unique=True)
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    created = models.DateTimeField(default=datetime.now())
 
     class Meta:
         abstract = True
@@ -39,16 +34,12 @@ class Person(Customer):
     last_name = models.CharField(max_length=255)
     birth_date = models.DateField(null=True)
     person_id = models.BigIntegerField(unique=True)
-    customer_type = models.CharField(max_length=15, choices=Customer.CUSTOMER_TYPE_CHOICES,
-                                     default=CustomerType.PERSON.value)
 
 
 class Company(Customer):
     business_name = models.CharField(max_length=255)
     business_type = models.CharField(max_length=255)
     business_id = models.BigIntegerField(unique=True)
-    customer_type = models.CharField(max_length=15, choices=Customer.CUSTOMER_TYPE_CHOICES,
-                                     default=CustomerType.COMPANY.value)
 
 
 class VehicleType(models.Model):
@@ -57,7 +48,7 @@ class VehicleType(models.Model):
     description = models.CharField(max_length=255, null=True)
     type_of_uses = models.CharField(max_length=255)
     created = models.DateTimeField(default=datetime.now())
-    km_per_maintenance: models.IntegerField(default=2000)
+    km_per_maintenance = models.IntegerField(auto_created=True, default=2000)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
 
@@ -65,12 +56,12 @@ class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
     brand = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
-    year = models.IntegerField(max_length=4, default=0)
+    year = models.IntegerField(default=0)
     description = models.CharField(max_length=500, null=True)
     buy_date = models.DateField(null=True)
     created = models.DateTimeField(default=datetime.now())
     updated = models.DateTimeField(null=True)
-    vehicle_type = models.ForeignKey('VehicleType', on_delete=models.DO_NOTHING)
+    vehicle_type = models.ForeignKey(VehicleType, on_delete=models.DO_NOTHING)
     ready_for_use = models.BooleanField(default=True)
     lock_for_rent = models.BooleanField(default=False)
     lock_for_maintenance: models.BooleanField(default=False)
@@ -78,7 +69,7 @@ class Vehicle(models.Model):
 
 class Rent(models.Model):
     id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=datetime.now())
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
     status = models.CharField(max_length=10, default=RentStatus.CREATED.value)
