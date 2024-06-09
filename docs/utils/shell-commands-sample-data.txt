@@ -1,12 +1,38 @@
-# Python Shell commands
+### Terminal and Python Shell commands
+# To start django shell, use this command but define .env location first.
+# .env and .env.production files must be created firsthand.
 
+## Terminal Prompt
+# Setting env local with local DB instance (must be run everytime a terminal is created)
+# This env variable is used when running migrations and when executing django shell to hit local DB
+$prompt (linux): export DJANGO_ENV_FILE=.env
+$prompt (win): set DJANGO_ENV_FILE=.env
+$prompt(both): python manage.py shell
+
+# Setting env local with Render DB instance(must be run everytime a terminal is created)
+# This env variable is used when running migrations and when executing django shell to hit Render DB
+$prompt (linux): export DJANGO_ENV_FILE=.env.production
+$prompt (win): set DJANGO_ENV_FILE=.env.production
+$prompt(both): python manage.py shell
+
+# Migrations
+$prompt(both): python manage.py makemigrations
+$prompt(both): python manage.py migrate
+# Superuser
+$prompt(both): python manage.py createsuperuser
+
+
+## Django Shell
 # Importing entity models
 from django.contrib.auth.models import User
 from datetime import date,datetime
 from webapp.models import Rent,Vehicle,VehicleType,Person, Company
 
+# Getting user from auth user with ORM
+user = User.objects.get(id=2)
+
 # Creating models with ORM
-chango = Person.objects.create(
+person = Person.objects.create(
 address= 'Fake street 1234',
 email = 'chango@paulini.com',
 user = user,
@@ -74,3 +100,7 @@ another_rent.save()
 and_another_rent.save()
 and_another_rent.vehicles.add(vehicle)
 and_another_rent.save()
+
+# Retrieving and printing a list of models
+rent = Rent.objects.all()
+print(rent.values())

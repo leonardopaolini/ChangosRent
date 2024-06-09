@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from enum import Enum
 import uuid
-from datetime import datetime
+from django.utils import timezone
 
 
 class RentStatus(Enum):
@@ -23,7 +23,7 @@ class Customer(models.Model):
     enabled = models.BooleanField(default=True)
     email = models.EmailField(unique=True)
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now())
 
     class Meta:
         abstract = True
@@ -47,7 +47,7 @@ class VehicleType(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, null=True)
     type_of_uses = models.CharField(max_length=255)
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now())
     km_per_maintenance = models.IntegerField(auto_created=True, default=2000)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -59,7 +59,7 @@ class Vehicle(models.Model):
     year = models.IntegerField(default=0)
     description = models.CharField(max_length=500, null=True)
     buy_date = models.DateField(null=True)
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(null=True)
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.DO_NOTHING)
     ready_for_use = models.BooleanField(default=True)
@@ -69,7 +69,7 @@ class Vehicle(models.Model):
 
 class Rent(models.Model):
     id = models.AutoField(primary_key=True)
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now())
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
     status = models.CharField(max_length=10, default=RentStatus.CREATED.value)

@@ -18,6 +18,7 @@ local_settings.py
 
 # Environments
 .env
+.env.*
 
 # Drawio
 *.drawio.bkp
