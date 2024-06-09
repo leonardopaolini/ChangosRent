@@ -7,6 +7,7 @@ lib/
 include/
 pyvenv.cfg
 lib64
+docker-compose.yml
 
 # Django stuff:
 *.log
@@ -31,7 +32,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/

@@ -1,3 +1,10 @@
 from django.shortcuts import render
+import datetime
 
-# Create your views here.
+
+def index(request):
+    context = {
+        'name': 'Changos Rent Webapp\'s index page',
+        'date': datetime.datetime.now()
+    }
+    return render(request, 'index.html', context)

@@ -1,0 +1,76 @@
+# Python Shell commands
+
+# Importing entity models
+from django.contrib.auth.models import User
+from datetime import date,datetime
+from webapp.models import Rent,Vehicle,VehicleType,Person, Company
+
+# Creating models with ORM
+chango = Person.objects.create(
+address= 'Fake street 1234',
+email = 'chango@paulini.com',
+user = user,
+first_name= 'Chango',
+last_name = 'Paulin',
+birth_date = date(1980,1,1),
+person_id= 1234567
+)
+
+company = Company.objects.create(
+address= 'Another Fake street 1234',
+email = 'raul@wizards.com',
+user = user,
+business_name='Raul Godoy Magia & Sorpresas',
+business_type = 'Factory',
+business_id = 4321
+)
+
+
+vehicle_type = VehicleType.objects.create(
+name= 'Hatchback',
+type_of_uses = 'urban',
+price = 25.00
+)
+
+vehicle = Vehicle.objects.create(
+    brand = 'Chevrolet',
+    model = 'Cruze LTZ Pack 1',
+    year = 2022,
+    buy_date = date(2022,1,1),
+    vehicle_type = vehicle_type
+)
+
+# Getting entities with ORM
+user = User.objects.get(id=2)
+person = Person.objects.get(id=1)
+vehicle_type = VehicleType.objects.get(id=1)
+vehicle = Vehicle.objects.get(id=1)
+
+# Instancing entities (it needs to be the previous one created first to save Rent model)
+rent = Rent(
+payment_method = 'Credit Card Visa',
+customer_object = person
+)
+
+another_rent = Rent(
+payment_method = 'Credit Card Mastercard',
+customer_object = company
+)
+
+and_another_rent = Rent(
+payment_method = 'Credit Card Amex',
+customer_object = person
+)
+
+# Saving/ Updating with ORM
+rent.save()
+rent.vehicles.add(vehicle)
+rent.save()
+
+another_rent.save()
+another_rent.vehicles.add(vehicle)
+another_rent.save()
+
+and_another_rent.save()
+and_another_rent.vehicles.add(vehicle)
+and_another_rent.save()
