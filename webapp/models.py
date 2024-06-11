@@ -77,7 +77,7 @@ class Rent(models.Model):
     vehicles = models.ManyToManyField(Vehicle)
     invoice_date = models.DateField(null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    # Generic relation fields
+    # Generic relation fields to deal with child models that extends from an abstract one
     customer_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
     customer_id = models.PositiveIntegerField()
     customer_object = GenericForeignKey('customer_type', 'customer_id')
