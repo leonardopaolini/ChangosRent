@@ -5,6 +5,7 @@ ENV/
 bin/
 lib/
 include/
+Scripts/
 pyvenv.cfg
 lib64
 docker-compose.yml

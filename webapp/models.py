@@ -62,9 +62,11 @@ class Vehicle(models.Model):
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(null=True)
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.DO_NOTHING)
+ 
+    #reemplar estos 3 campos por uno de status con estos estados + uno de bloqueo temporal por carrito
     ready_for_use = models.BooleanField(default=True)
     lock_for_rent = models.BooleanField(default=False)
-    lock_for_maintenance: models.BooleanField(default=False)
+    lock_for_maintenance = models.BooleanField(default=False)
 
 
 class Rent(models.Model):
@@ -72,6 +74,7 @@ class Rent(models.Model):
     created = models.DateTimeField(default=timezone.now())
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
+    # llevar este statusd a vehiculo y que funcione como cuando se agregue a la renta se pone un estatus blockeado temporal y que cuando se confirme la renta se pase a bloqueado 
     status = models.CharField(max_length=10, default=RentStatus.CREATED.value)
     payment_method = models.CharField(max_length=50)
     vehicles = models.ManyToManyField(Vehicle)
