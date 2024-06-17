@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Chango - Vehiculos de Alquiler- {% block titulo %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'web/styles/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>El Chango - Vehiculos de Alquiler</h1>
+        {% block menu %}
+            <nav>
+                <ul>
+                    <li><a class="button" href="{% url 'index' %}">Index</a></li>
+                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'lista_alumnos' %}">Listado de Alumnos</a></li>{% endif %}
+                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'alta_alumno' %}">Alta de alumno</a></li>{% endif %}
+                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'lista_docentes' %}">Listado de Docentes</a></li>{% endif %}
+                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'alta_docente' %}">Alta de docente</a></li>{% endif %}
+                </ul>
+            </nav>
+         {% endblock %}
+         {% block actions %}
+            <div class="actions">
+                {% if user.is_authenticated %}<a class="logout button" href="{% url 'logout' %}">Logout</a> {%endif%}
+            </div>
+         {% endblock %}
+         {% block messages %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{message.tags}}" {%endif%}> {{message}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+         {% endblock %}
+    </header>
+    <main class="centered">
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer class="centered">
+        {% block footer %}
+            <p>L&P 2024 - Todos los derechos reservados</p>
+        {% endblock %}
+    </footer>
+</body>
+</html>

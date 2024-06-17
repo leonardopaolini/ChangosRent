@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Inicio de Sesion</p>
+{% endblock%}
+{% block menu %} {% endblock  %}
+{% block main %}
     <form method="post">
         {% csrf_token %}
         <label for="username">Usuario:</label>
@@ -16,5 +15,5 @@
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}
+

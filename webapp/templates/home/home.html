@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <title>Home</title>
-    </head>
-    <body>
-
-        <h1>Bienvenidos a Changos Rent</h1>
-        <form method="post" action="{%  url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Salir</button>
-        </form>
-    </body>
-</html>
+{% extends "template.html" %}
+{% block titulo %}
+    El Chango home
+{% endblock %}
+{% block main %}
+ <h1>Bienvenidos a Changos Rent</h1>
+{% endblock %}
