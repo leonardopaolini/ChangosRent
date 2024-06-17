@@ -15,10 +15,8 @@
             <nav>
                 <ul>
                     <li><a class="button" href="{% url 'index' %}">Index</a></li>
-                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'lista_alumnos' %}">Listado de Alumnos</a></li>{% endif %}
-                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'alta_alumno' %}">Alta de alumno</a></li>{% endif %}
-                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'lista_docentes' %}">Listado de Docentes</a></li>{% endif %}
-                    {% if perms.web.add_rent %}<li><a class="button" href="{% url 'alta_docente' %}">Alta de docente</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'home' %}">Alta</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'home' %}">Modificacion</a></li>{% endif %}
                 </ul>
             </nav>
          {% endblock %}
