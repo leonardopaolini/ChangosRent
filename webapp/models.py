@@ -7,16 +7,13 @@ import uuid
 from django.utils import timezone
 
 
-class RentStatus(Enum):
-    CREATED = 'CREATED'
-    UPDATED = 'UPDATED'
-    CANCELLED = 'CANCELLED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    COMPLETED = 'COMPLETED'
+class VehicleStatus(Enum):
+    READY_FOR_USE = 'READY_FOR_USE'
+    LOCKED_FOR_RENT = 'LOCKED_FOR_RENT'
+    LOCKED_FOR_MAINTENANCE = 'LOCKED_FOR_MAINTENANCE'
 
 
 class Customer(models.Model):
-    RENT_STATUS_CHOICES = [(status.name, status.value) for status in RentStatus]
     id = models.AutoField(primary_key=True)
     address = models.CharField(max_length=255)
     customer_id = models.UUIDField(unique=True, default=uuid.uuid4)
@@ -53,6 +50,7 @@ class VehicleType(models.Model):
 
 
 class Vehicle(models.Model):
+    VEHICLE_STATUS_CHOICES = [(status.name, status.value) for status in VehicleStatus]
     id = models.AutoField(primary_key=True)
     brand = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
@@ -62,11 +60,7 @@ class Vehicle(models.Model):
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(null=True)
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.DO_NOTHING)
- 
-    #reemplar estos 3 campos por uno de status con estos estados + uno de bloqueo temporal por carrito
-    ready_for_use = models.BooleanField(default=True)
-    lock_for_rent = models.BooleanField(default=False)
-    lock_for_maintenance = models.BooleanField(default=False)
+    status = models.CharField(max_length=30, default=VehicleStatus.READY_FOR_USE.value)
 
 
 class Rent(models.Model):
@@ -74,8 +68,6 @@ class Rent(models.Model):
     created = models.DateTimeField(default=timezone.now())
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
-    # llevar este statusd a vehiculo y que funcione como cuando se agregue a la renta se pone un estatus blockeado temporal y que cuando se confirme la renta se pase a bloqueado 
-    status = models.CharField(max_length=10, default=RentStatus.CREATED.value)
     payment_method = models.CharField(max_length=50)
     vehicles = models.ManyToManyField(Vehicle)
     invoice_date = models.DateField(null=True)

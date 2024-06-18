@@ -16,8 +16,8 @@ $prompt (win): set DJANGO_ENV_FILE=.env.production
 $prompt(both): python manage.py shell
 
 # Migrations
-$prompt(both): python manage.py makemigrations
-$prompt(both): python manage.py migrate
+$prompt(both): python manage.py makemigrations (only 1 time at the beginning. If not, it start over, deleting the whole schema)
+$prompt(both): python manage.py migrate (every time I make changes)
 # Superuser
 $prompt(both): python manage.py createsuperuser
 
