@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from enum import Enum
 import uuid
-from .validation.validation_constants import *
+from webapp.common.validation.validation_constants import *
 from django.utils import timezone
 
 
@@ -43,11 +43,11 @@ class Company(Customer):
 class VehicleType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
-    description = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, null=True)
+    description = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, null=True, blank=True)
     type_of_uses = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     created = models.DateTimeField(default=timezone.now)
     km_per_maintenance = models.IntegerField(auto_created=True, default=KM_PER_MAINTENANCE_MIN_VALUE)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
 
 
 class Vehicle(models.Model):
@@ -56,7 +56,7 @@ class Vehicle(models.Model):
     brand = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     model = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     year = models.IntegerField(default=YEAR_MIN_VALUE)
-    description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH, null=True)
+    description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH, null=True, blank=True)
     buy_date = models.DateField(null=True)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(null=True)

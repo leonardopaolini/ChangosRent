@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Edición de Tipo de Vehiculo</p>
+{% endblock%}
+{% block menu %} {% endblock  %}
+{% block main %}
+ <h2>Listado de Tipos de Vehiculos</h2>
+     <a href="{% url 'home' %}">Volver</a>
+
+    <section class="listado_alumnos">
+        {% for type in vehicle_types %}
+            <article>
+                <p>Id: {{ type.id }} </p>
+                <p>Nombre: {{ type.name }} </p>
+                <p>Precio: {{ type.price }}</p>
+                <p><a class="button" href="{% url 'edit_vehicle_type' type.id %}">Editar</a></p>
+            </article>
+
+        {% empty %}
+            <article>
+                <p>No existen tipos de vehiculos</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
