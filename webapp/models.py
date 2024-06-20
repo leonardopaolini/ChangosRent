@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from enum import Enum
 import uuid
+from .validation.validation_constants import *
 from django.utils import timezone
 
 
@@ -15,47 +16,47 @@ class VehicleStatus(Enum):
 
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     customer_id = models.UUIDField(unique=True, default=uuid.uuid4)
     enabled = models.BooleanField(default=True)
     email = models.EmailField(unique=True)
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
 
 
 class Person(Customer):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    last_name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     birth_date = models.DateField(null=True)
     person_id = models.BigIntegerField(unique=True)
 
 
 class Company(Customer):
-    business_name = models.CharField(max_length=255)
-    business_type = models.CharField(max_length=255)
+    business_name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    business_type = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     business_id = models.BigIntegerField(unique=True)
 
 
 class VehicleType(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, null=True)
-    type_of_uses = models.CharField(max_length=255)
-    created = models.DateTimeField(default=timezone.now())
-    km_per_maintenance = models.IntegerField(auto_created=True, default=2000)
+    name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    description = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, null=True)
+    type_of_uses = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    created = models.DateTimeField(default=timezone.now)
+    km_per_maintenance = models.IntegerField(auto_created=True, default=KM_PER_MAINTENANCE_MIN_VALUE)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
 
 class Vehicle(models.Model):
     VEHICLE_STATUS_CHOICES = [(status.name, status.value) for status in VehicleStatus]
     id = models.AutoField(primary_key=True)
-    brand = models.CharField(max_length=255)
-    model = models.CharField(max_length=255)
-    year = models.IntegerField(default=0)
-    description = models.CharField(max_length=500, null=True)
+    brand = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    model = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
+    year = models.IntegerField(default=YEAR_MIN_VALUE)
+    description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH, null=True)
     buy_date = models.DateField(null=True)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(null=True)
@@ -65,7 +66,7 @@ class Vehicle(models.Model):
 
 class Rent(models.Model):
     id = models.AutoField(primary_key=True)
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(default=timezone.now)
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
     payment_method = models.CharField(max_length=50)
