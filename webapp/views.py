@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from webapp.common.constants import *
-from webapp.forms import CreateVehicleTypeForm
+from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm
 from webapp.models import VehicleType
 
 
@@ -76,3 +76,45 @@ def list_vehicle_type(request):
     vehicle_types = VehicleType.objects.all().order_by('name')
     context['vehicle_types'] = vehicle_types
     return render(request, 'vehicle_type/vehicle_type_list.html', context)
+
+
+def select_customer_type(request):
+    if request.method == 'POST':
+        customer_type = request.POST.get('customer_type')
+        if customer_type == 'person':
+            return redirect('signup_person')
+        elif customer_type == 'company':
+            return redirect('signup_company')
+    return render(request, 'customer/customer_type_selection.html')
+
+
+def signup_person(request):
+    context = {}
+    if request.method == 'POST':
+        form = SignUpPersonCustomerForm(request.POST)
+        if form.is_valid():
+            person = form.save()
+            user = authenticate(username=person.user.username, password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = SignUpPersonCustomerForm()
+    context['form'] = form
+    return render(request, 'customer/signup_customer.html', context)
+
+
+def signup_company(request):
+    context = {}
+    if request.method == 'POST':
+        form = SignUpCompanyCustomerForm(request.POST)
+        if form.is_valid():
+            company = form.save()
+            user = authenticate(username=company.user.username, password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = SignUpCompanyCustomerForm()
+    context['form'] = form
+    return render(request, 'customer/signup_customer.html', context)

@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Alta de Cliente - Selección Tipo de Cliente</p>
+{% endblock%}
+{% block menu %} {% endblock  %}
+{% block main %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <label>
+            <input type="radio" name="customer_type" value="person" required> Person
+        </label>
+        <label>
+            <input type="radio" name="customer_type" value="company" required> Company
+        </label>
+        <button type="submit">Next</button>
+    </form>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+{% endblock %}
