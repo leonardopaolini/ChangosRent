@@ -5,12 +5,12 @@ from webapp.common.validation.form_error_messages import *
 from webapp.models import Rent, VehicleType, Vehicle, Person, Company
 
 
-class CreateRentForm(forms.ModelForm):
+""" class CreateRentForm(forms.ModelForm):
     class Meta:
         model = Rent
         fields = '__all__'
-        error_messages = rent_error_messages
-
+        error_messages = rent_error_messages 
+ """
 
 class CreateVehicleTypeForm(forms.ModelForm):
     class Meta:
@@ -39,12 +39,12 @@ class CreateVehicleTypeForm(forms.ModelForm):
     }
 
 
-class CreateVehicleForm(forms.ModelForm):
+""" class CreateVehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
         fields = '__all__'
         error_messages = vehicle_error_messages
-
+ """
 
 class SignUpCompanyCustomerForm(forms.ModelForm):
     user_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, label='Usuario',
@@ -157,3 +157,72 @@ class SignUpPersonCustomerForm(forms.ModelForm):
             person.user = user
             person.save()
         return person
+
+
+class CreateVehicleForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        fields = ['brand', 'model', 'year', 'description', 'buy_date','vehicle_type']
+        error_messages = vehicle_error_messages
+        labels = {
+            'brand': 'Marca',
+            'model': 'Modelo',
+            'year': 'Año',
+            'description': 'Descripción',
+            'buy_date': 'Fecha de compra',
+            'vehicle_type': 'Tipo de vehiculo',
+        }
+
+    widgets = {
+        'brand': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                widget=forms.TextInput(attrs={'placeholder': 'Marca'})),
+        'model': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                widget=forms.TextInput(attrs={'placeholder': 'Modelo'})),
+        'year': forms.IntegerField(min_value=2000, max_value=2100, required=True,
+                                widget=forms.NumberInput(attrs={'placeholder': 'Año'})),
+        'description': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
+                                       widget=forms.TextInput(attrs={'placeholder': 'Descripción'})),
+        'buy_date': forms.DateField(
+            input_formats=['%d/%m/%Y', '%Y-%m-%d'],
+            widget=forms.DateInput(format='%d/%m/%Y'), required=True),
+        # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
+    }
+
+
+class CreateRentForm(forms.ModelForm):
+    class Meta:
+        model = Rent
+        fields = ['start_date', 'end_date', 'vehicles','payment_method', 'total']
+        error_messages = rent_error_messages 
+        labels = {
+            'start_date': 'Fecha desde',
+            'end_date' : 'Fecha hasta',
+            'vehicles' : 'Vehiculos',
+            'payment_method' : 'Forma de pago',
+            'total': 'Total',
+            'customer_object':'cliente',
+
+        }
+"""         widgets = {
+             'start_date': forms.DateField(required=True,
+                                      widget=forms.DateInput(attrs={'placeholder': 'Fecha desde'})),
+             'end_date' : forms.DateField(required=True,
+                                      widget=forms.DateInput(attrs={'placeholder': 'Fecha hasta'})),
+        }
+ """
+"""     def save(self, commit=True):
+#
+
+        person = super().save(commit=False)
+        if commit:
+            user = User.objects.create_user(
+                username=self.cleaned_data['user_name'],
+                email=person.email,
+                password=self.cleaned_data['password'],
+                first_name=person.first_name,
+                last_name=person.last_name,
+            )
+            person.user = user
+            person.save()
+        return person
+ """

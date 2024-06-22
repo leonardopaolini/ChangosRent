@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Listado de alquileres</p>
+{% endblock%}
+{% block menu %}
+    <a href="{% url 'home' %}">Volver</a>
+{% endblock  %}
+{% block main %}
+ <h2>Listado de alquileres</h2>
+     <a href="{% url 'home' %}">Volver</a>
+
+    <section class="listado_alquileres">
+        {% for rent in rents %}
+            <article>
+                <p>Id: {{ rent.id }} </p>
+                <p>Fecha factura: {{ rent.invoice_date }} </p>
+                <p>Cliente: {{ rent.customer_object }}</p>
+                <p>Fecha desde: {{ rent.start_date }} </p>
+                <p>Fecha hasta: {{ rent.end_date }} </p>
+                <p>Vehiculos: {{ rent.vehicles }} </p>
+                <p>Monto total: {{ rent.total }} </p>
+            </article>
+
+        {% empty %}
+            <article>
+                <p>No existen alquileres</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
