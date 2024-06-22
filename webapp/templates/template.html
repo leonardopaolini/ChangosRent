@@ -17,6 +17,10 @@
                     <li><a class="button" href="{% url 'index' %}">Index</a></li>
                     {% if user.is_authenticated %}<li><a class="button" href="{% url 'create_vehicle_type' %}">Alta Tipo Vehiculo</a></li>{% endif %}
                     {% if user.is_authenticated %}<li><a class="button" href="{% url 'list_vehicle_type' %}">Lista de Tipos de Vehiculo</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'create_vehicle' %}">Alta Vehiculo</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'list_vehicle' %}">Lista de Vehiculos</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'create_rent' %}">Alta de alquiler</a></li>{% endif %}
+                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'list_rent' %}">Lista de alquileres</a></li>{% endif %}
                 </ul>
             </nav>
          {% endblock %}

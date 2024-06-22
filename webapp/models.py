@@ -48,7 +48,8 @@ class VehicleType(models.Model):
     created = models.DateTimeField(default=timezone.now)
     km_per_maintenance = models.IntegerField(auto_created=True, default=KM_PER_MAINTENANCE_MIN_VALUE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
-
+    def __str__(self):
+        return f"{self.name}"
 
 class Vehicle(models.Model):
     VEHICLE_STATUS_CHOICES = [(status.name, status.value) for status in VehicleStatus]

@@ -2,8 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from webapp.common.constants import *
-from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm
-from webapp.models import VehicleType
+from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, CreateRentForm
+from webapp.models import VehicleType, Vehicle, Rent
 
 
 def index(request):
@@ -118,3 +118,65 @@ def signup_company(request):
         form = SignUpCompanyCustomerForm()
     context['form'] = form
     return render(request, 'customer/signup_customer.html', context)
+
+
+@login_required(login_url='login')
+def create_vehicle(request):
+    context = {}
+    if request.method == POST:
+        form = CreateVehicleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreateVehicleForm()
+    context['form'] = form
+    return render(request, 'vehicle/create_vehicle.html', context)
+
+
+@login_required(login_url='login')
+def edit_vehicle(request, vehicle_id):
+    context = {}
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+    if request.method == POST:
+        form = CreateVehicleForm(request.POST, instance=vehicle)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreateVehicleForm(instance=vehicle)
+    context['form'] = form
+    context['vehicle'] = vehicle
+    return render(request, 'vehicle/edit_vehicle.html', context)
+
+
+@login_required(login_url='login')
+def list_vehicle(request):
+    context = {}
+    vehicles = Vehicle.objects.all().order_by('model')
+    context['vehicles'] = vehicles
+    return render(request, 'vehicle/vehicle_list.html', context)
+
+
+@login_required(login_url='login')
+def create_rent(request):
+    context = {}
+    if request.method == POST:
+        form = CreateRentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreateRentForm()
+    context['form'] = form
+    return render(request, 'rent/create_rent.html', context)
+
+
+
+@login_required(login_url='login')
+def list_rent(request):
+    context = {}
+    rents = Rent.objects.all().order_by('invoice_date')
+    context['rents'] = rents
+    return render(request, 'rent/rent_list.html', context)
+

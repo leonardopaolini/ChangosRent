@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Listado de Vehiculos</p>
+{% endblock%}
+{% block menu %} {% endblock  %}
+{% block main %}
+ <h2>Listado de Vehiculos</h2>
+     <a href="{% url 'home' %}">Volver</a>
+
+    <section class="listado_vehiculos">
+        {% for vehicle in vehicles %}
+            <article>
+                <p>Id: {{ vehicle.id }} </p>
+                <p>Modelo: {{ vehicle.model }} </p>
+                <p>Año: {{ vehicle.year }}</p>
+                <p><a class="button" href="{% url 'edit_vehicle' vehicle.id %}">Editar</a></p>
+            </article>
+
+        {% empty %}
+            <article>
+                <p>No existen vehiculos</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
