@@ -2,11 +2,11 @@
 {% block titulo %}
     <p>Edición de Tipo de Vehiculo</p>
 {% endblock%}
-{% block menu %} {% endblock  %}
+{% block menu %}
+    <a href="{% url 'home' %}">Volver</a>
+{% endblock  %}
 {% block main %}
  <h2>Listado de Tipos de Vehiculos</h2>
-     <a href="{% url 'home' %}">Volver</a>
-
     <section class="listado_alumnos">
         {% for type in vehicle_types %}
             <article>

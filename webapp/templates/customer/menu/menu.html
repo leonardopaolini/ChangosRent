@@ -1,0 +1,20 @@
+{% block menu %}
+    <nav>
+        <ul>
+            <li>
+                <a class="button" href="{% url 'index' %}">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li>
+                <a class="button" href="{% url 'list_vehicle_type' %}">Alquilar Vehículo</a>
+            </li>
+            <li>
+                <a class="button" href="{% url 'list_vehicle_type' %}">Mis Alquileres</a>
+            </li>
+            <li>
+                <a class="button" href="{% url 'list_vehicle_type' %}">Mis Perfil</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

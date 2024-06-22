@@ -4,10 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from webapp.common.constants import *
 from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm
 from webapp.models import VehicleType
+from webapp.common.utils.views_utils import get_menu, redirect_to_login, redirect_to_home
 
 
 def index(request):
-    return redirect('login')
+    return redirect_to_login()
 
 
 def login_view(request):
@@ -21,12 +22,14 @@ def login_view(request):
             return redirect('home')
         else:
             return render(request, 'login/login.html', context)
+    if request.method == GET and request.user.is_authenticated:
+        return redirect_to_home()
     return render(request, 'login/login.html')
 
 
 @login_required(login_url='login')
 def home_view(request):
-    return render(request,'home/home.html')
+    return render(request, 'home/home.html', {'menu': get_menu(request)})
 
 
 @login_required(login_url='login')
@@ -37,7 +40,7 @@ def rent_view(request):
 @login_required(login_url='login')
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect_to_login()
 
 
 @login_required(login_url='login')
@@ -47,7 +50,7 @@ def create_vehicle_type(request):
         form = CreateVehicleTypeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect_to_home()
     else:
         form = CreateVehicleTypeForm()
     context['form'] = form
@@ -62,7 +65,7 @@ def edit_vehicle_type(request, vehicle_type_id):
         form = CreateVehicleTypeForm(request.POST, instance=vehicle_type)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect_to_home()
     else:
         form = CreateVehicleTypeForm(instance=vehicle_type)
     context['form'] = form
@@ -85,7 +88,7 @@ def select_customer_type(request):
             return redirect('signup_person')
         elif customer_type == 'company':
             return redirect('signup_company')
-    return render(request, 'customer/customer_type_selection.html')
+    return render(request, 'customer/signup/customer_type_selection.html')
 
 
 def signup_person(request):
@@ -97,11 +100,11 @@ def signup_person(request):
             user = authenticate(username=person.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect_to_home()
     else:
         form = SignUpPersonCustomerForm()
     context['form'] = form
-    return render(request, 'customer/signup_customer.html', context)
+    return render(request, 'customer/signup/signup_customer.html', context)
 
 
 def signup_company(request):
@@ -113,8 +116,8 @@ def signup_company(request):
             user = authenticate(username=company.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect_to_home()
     else:
         form = SignUpCompanyCustomerForm()
     context['form'] = form
-    return render(request, 'customer/signup_customer.html', context)
+    return render(request, 'customer/signup/signup_customer.html', context)

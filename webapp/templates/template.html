@@ -6,23 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Chango - Vehiculos de Alquiler- {% block titulo %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'web/styles/base.css' %}">
+    <script src="{% static 'web/js/form-validations.js' %}" defer></script>
+    <script src="{% static 'web/js/commons.js' %}" defer></script>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
         <h1>El Chango - Vehiculos de Alquiler</h1>
-        {% block menu %}
-            <nav>
-                <ul>
-                    <li><a class="button" href="{% url 'index' %}">Index</a></li>
-                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'create_vehicle_type' %}">Alta Tipo Vehiculo</a></li>{% endif %}
-                    {% if user.is_authenticated %}<li><a class="button" href="{% url 'list_vehicle_type' %}">Lista de Tipos de Vehiculo</a></li>{% endif %}
-                </ul>
-            </nav>
+         {% block menu %}
+             {% include menu %}
          {% endblock %}
          {% block actions %}
             <div class="actions">
-                {% if user.is_authenticated %}<a class="logout button" href="{% url 'logout' %}">Logout</a> {%endif%}
+                {% if user.is_authenticated %}<a class="logout button" href="{% url 'logout' %}">Cerrar Sesión</a> {%endif%}
             </div>
          {% endblock %}
          {% block messages %}
@@ -34,6 +30,9 @@
                 </ul>
             {% endif %}
          {% endblock %}
+        {% if error %}
+            <p id="pageError" style="color: red;">{{ error }}</p>
+        {% endif %}
     </header>
     <main class="centered">
         {% block main %}{% endblock %}
