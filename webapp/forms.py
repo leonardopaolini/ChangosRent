@@ -5,13 +5,6 @@ from webapp.common.validation.form_error_messages import *
 from webapp.models import Rent, VehicleType, Vehicle, Person, Company
 
 
-""" class CreateRentForm(forms.ModelForm):
-    class Meta:
-        model = Rent
-        fields = '__all__'
-        error_messages = rent_error_messages 
- """
-
 class CreateVehicleTypeForm(forms.ModelForm):
     class Meta:
         model = VehicleType
@@ -39,13 +32,6 @@ class CreateVehicleTypeForm(forms.ModelForm):
     }
 
 
-""" class CreateVehicleForm(forms.ModelForm):
-    class Meta:
-        model = Vehicle
-        fields = '__all__'
-        error_messages = vehicle_error_messages
- """
-
 class SignUpCompanyCustomerForm(forms.ModelForm):
     user_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, label='Usuario',
                                 widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
@@ -57,6 +43,7 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
                                        label='Confirmar Contraseña',
                                        widget=forms.PasswordInput(
                                            attrs={'placeholder': 'Confirmar Contraseña'}))
+
     class Meta:
         model = Company
         fields = ['email', 'address', 'business_name', 'business_type',
