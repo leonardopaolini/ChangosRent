@@ -10,26 +10,17 @@ class CreateVehicleTypeForm(forms.ModelForm):
         model = VehicleType
         fields = ['name', 'description', 'type_of_uses', 'km_per_maintenance', 'price']
         error_messages = vehicle_type_error_messages
-        labels = {
-            'name': 'Nombre',
-            'description': 'Descripción',
-            'type_of_uses': 'Tipo de Usos',
-            'km_per_maintenance': 'Km por Mantenimiento',
-            'price': 'Precio',
-        }
 
-    widgets = {
-        'name': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                widget=forms.TextInput(attrs={'placeholder': 'Nombre'})),
-        'description': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
-                                       widget=forms.TextInput(attrs={'placeholder': 'Descripción'})),
-        'type_of_uses': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                        widget=forms.TextInput(attrs={'placeholder': 'Tipo de Usos'})),
-        'km_per_maintenance': forms.IntegerField(required=True, widget=forms.NumberInput(
-            attrs={'placeholder': 'Km por Mantenimiento'})),
-        'price': forms.DecimalField(max_digits=7, decimal_places=2, required=True,
-                                    widget=forms.NumberInput(attrs={'placeholder': 'Precio'})),
-    }
+    name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                           widget=forms.TextInput(attrs={'placeholder': 'Nombre'}), label='Nombre')
+    description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
+                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción'}), label='Descripción')
+    type_of_uses = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                   widget=forms.TextInput(attrs={'placeholder': 'Tipo de Usos'}), label='Tipo de Usos')
+    km_per_maintenance = forms.IntegerField(required=True, widget=forms.NumberInput(
+        attrs={'placeholder': 'Km por Mantenimiento'}), label='Km por Mantenimiento')
+    price = forms.DecimalField(max_digits=7, decimal_places=2, required=True,
+                               widget=forms.NumberInput(attrs={'placeholder': 'Precio'}), label='Precio')
 
 
 class SignUpCompanyCustomerForm(forms.ModelForm):
@@ -49,30 +40,23 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
         fields = ['email', 'address', 'business_name', 'business_type',
                   'business_id']
         error_messages = company_error_messages
-        labels = {
-            'email': 'Email',
-            'address': 'Dirección',
-            'business_name': 'Nombre de la Compañía',
-            'business_type': 'Tipo de Compañia',
-            'business_id': 'Id de Compañia',
-        }
 
-    widgets = {
-        'email': forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Email'})),
-        'address': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                   widget=forms.TextInput(
-                                       attrs={'placeholder': 'Dirección'})),
-        'business_name': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
-                                         required=True, widget=forms.TextInput(
-                attrs={'placeholder': 'Nombre de Compañía'})),
-        'business_type': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                         widget=forms.TextInput(
-                                             attrs={'placeholder': 'Tipo de Compañía'})),
-        'business_id': forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
-                                          required=True,
-                                          widget=forms.NumberInput(attrs={'placeholder': 'Id de Compañía'})),
-    }
+        email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                 widget=forms.TextInput(attrs={'placeholder': 'Email'}), label="Email")
+        address = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                  widget=forms.TextInput(
+                                      attrs={'placeholder': 'Dirección'}), label="Dirección")
+        business_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
+                                        required=True,
+                                        widget=forms.TextInput(
+                                            attrs={'placeholder': 'Nombre de Compañía'}), label="Nombre de Compañía")
+        business_type = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                        widget=forms.TextInput(
+                                            attrs={'placeholder': 'Tipo de Compañía'}), label="Tipo de Compañía")
+        business_id = forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
+                                         required=True,
+                                         widget=forms.NumberInput(attrs={'placeholder': 'Id de Compañía'}),
+                                         label="Id de Compañía")
 
     def save(self, commit=True):
         company = super().save(commit=False)
@@ -106,30 +90,21 @@ class SignUpPersonCustomerForm(forms.ModelForm):
         fields = ['email', 'address', 'person_id', 'first_name', 'last_name',
                   'birth_date']
         error_messages = person_error_messages
-        labels = {
-            'email': 'Email',
-            'address': 'Dirección',
-            'person_id': 'Id de Persona',
-            'first_name': 'Nombre',
-            'last_name': 'Apellido',
-            'birth_date': 'Fecha de Nacimiento',
-        }
 
-    widgets = {
-        'email': forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Email'})),
-        'address': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-            attrs={'placeholder': 'Dirección'})),
-        'person_id': forms.IntegerField(min_value=PERSON_ID_MIN_VALUE, max_value=PERSON_ID_MAX_VALUE, required=True,
-                                        widget=forms.NumberInput(
-                                            attrs={'placeholder': 'Id de Persona'})),
-        'first_name': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-            attrs={'placeholder': 'Nombre'})),
-        'last_name': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-            attrs={'placeholder': 'Apellido'})),
-        'birth_date': forms.DateField(required=True,
-                                      widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento'})),
-    }
+    email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'Email'}), label='Email')
+    address = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Dirección'}), label='Dirección')
+    person_id = forms.IntegerField(min_value=PERSON_ID_MIN_VALUE, max_value=PERSON_ID_MAX_VALUE, required=True,
+                                   widget=forms.NumberInput(
+                                       attrs={'placeholder': 'Id de Persona'}), label='Id de Persona')
+    first_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Nombre'}), label='Nombre')
+    last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Apellido'}), label='Apellido')
+    birth_date = forms.DateField(required=True,
+                                 widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento'}), label='Fecha de Nacimiento')
+
 
     def save(self, commit=True):
         person = super().save(commit=False)
@@ -149,31 +124,23 @@ class SignUpPersonCustomerForm(forms.ModelForm):
 class CreateVehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
-        fields = ['brand', 'model', 'year', 'description', 'buy_date','vehicle_type']
+        fields = ['brand', 'model', 'year', 'description', 'buy_date', 'vehicle_type']
         error_messages = vehicle_error_messages
-        labels = {
-            'brand': 'Marca',
-            'model': 'Modelo',
-            'year': 'Año',
-            'description': 'Descripción',
-            'buy_date': 'Fecha de compra',
-            'vehicle_type': 'Tipo de vehiculo',
-        }
 
-    widgets = {
-        'brand': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                widget=forms.TextInput(attrs={'placeholder': 'Marca'})),
-        'model': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                widget=forms.TextInput(attrs={'placeholder': 'Modelo'})),
-        'year': forms.IntegerField(min_value=2000, max_value=2100, required=True,
-                                widget=forms.NumberInput(attrs={'placeholder': 'Año'})),
-        'description': forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
-                                       widget=forms.TextInput(attrs={'placeholder': 'Descripción'})),
-        'buy_date': forms.DateField(
-            input_formats=['%d/%m/%Y', '%Y-%m-%d'],
-            widget=forms.DateInput(format='%d/%m/%Y'), required=True),
-        # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
-    }
+    brand = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                            widget=forms.TextInput(attrs={'placeholder': 'Marca'}), label='Marca')
+    model = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                            widget=forms.TextInput(attrs={'placeholder': 'Modelo'}), label='Modelo')
+    year = forms.IntegerField(min_value=2000, max_value=2100, required=True,
+                              widget=forms.NumberInput(attrs={'placeholder': 'Año'}), label='Año')
+    description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
+                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción'}),
+                                  label='Descripción')
+    buy_date = forms.DateField(
+        input_formats=['%m/%d/%Y','%d/%m/%Y'],
+        widget=forms.DateInput(format='%m/%d/%Y', attrs={'class': 'form-control mydatepicker'}), required=True,
+        label='Fecha de Compra')
+    # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
 
 
 class CreateRentForm(forms.ModelForm):
@@ -190,12 +157,12 @@ class CreateRentForm(forms.ModelForm):
             'customer_object':'cliente',
 
         }
-"""         widgets = {
-             'start_date': forms.DateField(required=True,
-                                      widget=forms.DateInput(attrs={'placeholder': 'Fecha desde'})),
-             'end_date' : forms.DateField(required=True,
-                                      widget=forms.DateInput(attrs={'placeholder': 'Fecha hasta'})),
-        }
+"""
+         start_date = forms.DateField(required=True,
+                                  widget=forms.DateInput(attrs={'placeholder': 'Fecha desde'}))
+         end_date = forms.DateField(required=True,
+                                  widget=forms.DateInput(attrs={'placeholder': 'Fecha hasta'}))
+        
  """
 """     def save(self, commit=True):
 #
