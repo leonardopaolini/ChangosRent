@@ -1,7 +1,11 @@
 {% extends "template.html" %}
+{% load static %}
 {% block titulo %}
-    <p>Inicio de Sesión</p>
+    Inicio de Sesión
 {% endblock%}
+{% block extra_files %}
+    <script src="{% static 'js/form-validations.js' %}"></script>
+{% endblock %}
 {% block menu %} {% endblock  %}
 {% block main %}
     <form method="post" id="loginForm" novalidate>

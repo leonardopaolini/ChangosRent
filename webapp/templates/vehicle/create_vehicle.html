@@ -8,7 +8,7 @@
 {% block main %}
     <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p  }}
+        {{ form.as_div  }}
         <button type="submit">Guardar</button>
     </form>
     {% if error %}

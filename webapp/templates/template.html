@@ -4,11 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_files %} {% endblock %}
     <title>El Chango - Vehiculos de Alquiler- {% block titulo %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'web/styles/base.css' %}">
-    <script src="{% static 'web/js/form-validations.js' %}" defer></script>
-    <script src="{% static 'web/js/commons.js' %}" defer></script>
-    {% block extra_css %}{% endblock %}
+
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css' %}">
+    <!-- Page plugins css -->
+    <link href="{% static 'plugins/clockpicker/dist/jquery-clockpicker.min.css' %}">
+    <!-- Color picker plugins css -->
+    <link rel="stylesheet" href="{% static 'plugins/jquery-asColorPicker-master/css/asColorPicker.css' %}">
+    <!-- Date picker plugins css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
+    <!-- Daterange picker plugins css -->
+    <link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.css' %}">
+    <link  rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+
 </head>
 <body>
     <header>
@@ -37,11 +48,33 @@
     <main class="centered">
         {% block main %}{% endblock %}
     </main>
+    <script src="{% static 'js/commons.js' %}" defer></script>
 
-    <footer class="centered">
-        {% block footer %}
-            <p>L&P 2024 - Todos los derechos reservados</p>
-        {% endblock %}
-    </footer>
+    <script src="{% static 'plugins/common/common.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/gleek.js' %}"></script>
+    <script src="{% static 'js/styleSwitcher.js' %}"></script>
+
+    <script src="{% static 'plugins/moment/moment.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js' %}"></script>
+    <!-- Clock Plugin JavaScript -->
+    <script src="{% static 'plugins/clockpicker/dist/jquery-clockpicker.min.js' %}"></script>
+    <!-- Color Picker Plugin JavaScript -->
+    <script src="{% static 'plugins/jquery-asColorPicker-master/libs/jquery-asColor.js' %}"></script>
+    <script src="{% static 'plugins/jquery-asColorPicker-master/libs/jquery-asGradient.js' %}"></script>
+    <script src="{% static 'plugins/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js' %}"></script>
+    <!-- Date Picker Plugin JavaScript -->
+    <script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <!-- Date range Plugin JavaScript -->
+    <script src="{% static 'plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'js/plugins-init/form-pickers-init.js' %}"></script>
+
 </body>
+<footer class="centered">
+    {% block footer %}
+        <p>L&P 2024 - Todos los derechos reservados</p>
+    {% endblock %}
+</footer>
 </html>
