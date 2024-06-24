@@ -2,7 +2,10 @@ from django import forms
 from django.contrib.auth.models import User
 
 from webapp.common.validation.form_error_messages import *
-from webapp.models import Rent, VehicleType, Vehicle, Person, Company
+from webapp.models import Rent, VehicleType, Vehicle, Person, Company, Customer
+from django.utils  import timezone
+from django.core.exceptions import ValidationError
+import datetime
 
 
 class CreateVehicleTypeForm(forms.ModelForm):
@@ -144,39 +147,74 @@ class CreateVehicleForm(forms.ModelForm):
 
 
 class CreateRentForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(CreateRentForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Rent
-        fields = ['start_date', 'end_date', 'vehicles','payment_method', 'total']
+        fields = ['start_date', 'end_date', 'vehicles','payment_method']
         error_messages = rent_error_messages 
         labels = {
             'start_date': 'Fecha desde',
             'end_date' : 'Fecha hasta',
             'vehicles' : 'Vehiculos',
             'payment_method' : 'Forma de pago',
-            'total': 'Total',
-            'customer_object':'cliente',
-
+ #           'total': 'Total',
         }
-"""
-         start_date = forms.DateField(required=True,
-                                  widget=forms.DateInput(attrs={'placeholder': 'Fecha desde'}))
-         end_date = forms.DateField(required=True,
-                                  widget=forms.DateInput(attrs={'placeholder': 'Fecha hasta'}))
-        
- """
-"""     def save(self, commit=True):
-#
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date= cleaned_data.get("start_date")
+        end_date= cleaned_data.get("end_date")
+        if isinstance(start_date,datetime.date):
+            if isinstance(end_date,datetime.date):
+                if start_date>end_date:
+                    raise ValidationError("La fecha de inicio debe ser menor que la fecha de fin")
+        return cleaned_data
 
-        person = super().save(commit=False)
+    def save(self, commit=True):
+        #obtener usuario logueado
+        #a partir de este usuario obtener persona o empresa (customer)
+        # poner esta instancia en la renta
+        #y fin
+        rent= super().save(commit=False)
         if commit:
-            user = User.objects.create_user(
-                username=self.cleaned_data['user_name'],
-                email=person.email,
-                password=self.cleaned_data['password'],
-                first_name=person.first_name,
-                last_name=person.last_name,
-            )
-            person.user = user
-            person.save()
-        return person
- """
+            user= self.user
+            
+            customer = Person.objects.filter(user=user).first()
+            if customer is None:
+                customer = Company.objects.filter(user=user).first()
+            rent.customer_object = customer            
+            rent.total=0
+            rent.invoice_date=timezone.now().date()
+            rent.save()
+            self.save_m2m()
+            rentaux2= Rent()
+            rentaux= Rent.objects.get(id=rent.id)
+
+            #calculo el total de la factura
+            total=0
+            for vehicle in rentaux.vehicles.all():
+                total= total + vehicle.vehicle_type.price
+            dias = rent.end_date - rent.start_date 
+            rent.total=total*dias.days
+          
+            rent.save()
+
+            
+
+#            for vehicle in rent.vehicles:
+#                total= total + vehicle.vehicle_type.price
+#            rent.total=total
+#            rent.save()
+        return rent
+    def save_m2m(self, commit=True):
+        vehiculos= self.cleaned_data.get('vehicles')
+        print("vehicles:", vehiculos)
+        super().save_m2m()  # Llama al método original para guardar las relaciones ManyToMany        
+
+#            for vehicle in rent.vehicles:
+#                total= total + vehicle.vehicle_type.price
+#            rent.total=total
+#            rent.save()
+    

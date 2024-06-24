@@ -65,6 +65,8 @@ class Vehicle(models.Model):
     updated = models.DateTimeField(null=True)
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=30, default=VehicleStatus.READY_FOR_USE.value)
+    def __str__(self):
+        return f"{self.brand} - {self.model} - {self.year} - ${self.vehicle_type.price}"
 
 
 class Rent(models.Model):

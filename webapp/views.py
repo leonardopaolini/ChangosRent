@@ -165,12 +165,13 @@ def list_vehicle(request):
 def create_rent(request):
     context = {}
     if request.method == POST:
-        form = CreateRentForm(request.POST)
+        form = CreateRentForm(request.user,data=request.POST)
         if form.is_valid():
             form.save()
+            #form.save_m2m()
             return redirect('home')
     else:
-        form = CreateRentForm()
+        form = CreateRentForm(request.user)
     context['form'] = form
     return render(request, 'rent/create_rent.html', context)
 
