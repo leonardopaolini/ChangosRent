@@ -6,41 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block extra_files %} {% endblock %}
     <title>El Chango - Vehiculos de Alquiler- {% block titulo %}{% endblock %}</title>
-
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css' %}">
-    <!-- Page plugins css -->
-    <link href="{% static 'plugins/clockpicker/dist/jquery-clockpicker.min.css' %}">
-    <!-- Color picker plugins css -->
-    <link rel="stylesheet" href="{% static 'plugins/jquery-asColorPicker-master/css/asColorPicker.css' %}">
-    <!-- Date picker plugins css -->
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
-    <!-- Daterange picker plugins css -->
-    <link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.css' %}">
-    <link  rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'styles/base.css' %}">
-
+    <link src="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+    <link href="{% static 'plugins/material/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/simplebar/simplebar.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/prism/prism.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/select2/css/select2.min.css' %}" rel="stylesheet"/>
+    <link id="main-css-href" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link href="{% static 'images/favicon.png' %}" rel="shortcut icon"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
 </head>
-<body>
+<body id="body" class="bg-light-gray">
     <header>
-        <h1>El Chango - Vehiculos de Alquiler</h1>
-         {% block menu %}
-             {% include menu %}
-         {% endblock %}
-         {% block actions %}
+        {% block menu %}
+            {% include menu %}
+        {% endblock %}
+        {% block actions %}
             <div class="actions">
-                {% if user.is_authenticated %}<a class="logout button" href="{% url 'logout' %}">Cerrar Sesión</a> {%endif%}
+                {% if user.is_authenticated %}
+                    <a class="logout button" href="{% url 'logout' %}">Cerrar Sesión</a> {% endif %}
             </div>
-         {% endblock %}
-         {% block messages %}
+        {% endblock %}
+        {% block messages %}
             {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
-                        <li {% if message.tags %} class="{{message.tags}}" {%endif%}> {{message}}</li>
+                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
-         {% endblock %}
+        {% endblock %}
         {% if error %}
             <p id="pageError" style="color: red;">{{ error }}</p>
         {% endif %}
@@ -49,32 +47,29 @@
         {% block main %}{% endblock %}
     </main>
     <script src="{% static 'js/commons.js' %}" defer></script>
-
-    <script src="{% static 'plugins/common/common.min.js' %}"></script>
-    <script src="{% static 'js/custom.min.js' %}"></script>
-    <script src="{% static 'js/settings.js' %}"></script>
-    <script src="{% static 'js/gleek.js' %}"></script>
-    <script src="{% static 'js/styleSwitcher.js' %}"></script>
-
-    <script src="{% static 'plugins/moment/moment.js' %}"></script>
-    <script src="{% static 'plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js' %}"></script>
-    <!-- Clock Plugin JavaScript -->
-    <script src="{% static 'plugins/clockpicker/dist/jquery-clockpicker.min.js' %}"></script>
-    <!-- Color Picker Plugin JavaScript -->
-    <script src="{% static 'plugins/jquery-asColorPicker-master/libs/jquery-asColor.js' %}"></script>
-    <script src="{% static 'plugins/jquery-asColorPicker-master/libs/jquery-asGradient.js' %}"></script>
-    <script src="{% static 'plugins/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js' %}"></script>
-    <!-- Date Picker Plugin JavaScript -->
-    <script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
-    <!-- Date range Plugin JavaScript -->
-    <script src="{% static 'plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
-    <script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
-    <script src="{% static 'js/plugins-init/form-pickers-init.js' %}"></script>
-
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
+    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+    <script src="{% static 'plugins/prism/prism.js' %}"></script>
+    <script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/jquery-mask-input/jquery.mask.min.js' %}"></script>
+    <script src="{% static 'js/mono.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 </body>
-<footer class="centered">
+<footer class="footer mt-auto justify-content-center">
     {% block footer %}
-        <p>L&P 2024 - Todos los derechos reservados</p>
     {% endblock %}
+    <div class="copyright bg-white">
+        <p>
+            L&P <span id="copy-year"></span> - Todos los derechos reservados
+        </p>
+    </div>
+    <script>
+        const year = new Date().getFullYear();
+        document.getElementById("copy-year").innerHTML = year;
+    </script>
 </footer>
 </html>

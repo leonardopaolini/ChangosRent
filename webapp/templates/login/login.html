@@ -2,29 +2,59 @@
 {% load static %}
 {% block titulo %}
     Inicio de Sesión
-{% endblock%}
+{% endblock %}
 {% block extra_files %}
     <script src="{% static 'js/form-validations.js' %}"></script>
 {% endblock %}
-{% block menu %} {% endblock  %}
+{% block menu %} {% endblock %}
 {% block main %}
-    <form method="post" id="loginForm" novalidate>
-        {% csrf_token %}
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh">
+        <div class="d-flex flex-column justify-content-between">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-10">
+                    <div class="card card-default mb-0">
+                        <div class="card-header pb-0">
+                            <div class="app-brand w-100 d-flex justify-content-center border-bottom-0">
+                                <a class="w-auto pl-0" href={% url 'home' %}>
+                                    <span class="brand-name text-dark">Changos Rent</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body px-5 pb-5 pt-0">
+                            <h4 class="text-dark mb-6 text-center">Alquiler de Vehículos</h4>
+                            <form method="post" id="loginForm" novalidate>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group col-md-12 mb-4">
+                                        <input type="text" class="form-control input-lg" id="username" name="username"
+                                               aria-describedby="emailHelp"
+                                               placeholder="Usuario" required>
+                                         <span class="text-danger" id="usernameError"></span>
+                                    </div>
+                                    <div class="form-group col-md-12 ">
+                                        <input type="password" class="form-control input-lg" id="password" name="password"
+                                               placeholder="Contraseña" required>
+                                         <span class="text-danger" id="passwordError"></span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <div class="custom-control custom-checkbox mr-3 mb-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            </div>
+                                            <a class="text-color" href="#"> Olvidaste tu contraseña? </a>
+                                        </div>
 
-        <div>
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required><br>
-            <span class="error-message" id="usernameError" style="color: red;"></span>
+                                        <button type="submit" class="btn btn-primary btn-pill mb-4 align-content-center">Ingresar</button>
+                                        <p>No tenés tu cuenta?
+                                            <a class="text-blue" href="{% url 'signup_customer' %}">Registrarse</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required><br>
-            <span class="error-message" id="passwordError" style="color: red;"></span>
-        </div>
-        <div>
-            <button type="submit">Ingresar</button>
-            <a class="button" href="{% url 'signup_customer' %}">Registrarse</a>
-        </div>
-    </form>
+    </div>
 {% endblock %}
-

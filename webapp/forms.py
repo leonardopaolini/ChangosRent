@@ -108,7 +108,6 @@ class SignUpPersonCustomerForm(forms.ModelForm):
     birth_date = forms.DateField(required=True,
                                  widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento'}), label='Fecha de Nacimiento')
 
-
     def save(self, commit=True):
         person = super().save(commit=False)
         if commit:
@@ -140,8 +139,9 @@ class CreateVehicleForm(forms.ModelForm):
                                   widget=forms.TextInput(attrs={'placeholder': 'Descripción'}),
                                   label='Descripción')
     buy_date = forms.DateField(
-        input_formats=['%m/%d/%Y','%d/%m/%Y'],
-        widget=forms.DateInput(format='%m/%d/%Y', attrs={'class': 'form-control mydatepicker'}), required=True,
+        input_formats=['%m/%d/%Y', '%d/%m/%Y'],
+        widget=forms.DateInput(format='%m/%d/%Y',
+                               attrs={'class': 'form-control mydatepicker', 'data-mask': '00/00/0000'}), required=True,
         label='Fecha de Compra')
     # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
 
@@ -189,32 +189,19 @@ class CreateRentForm(forms.ModelForm):
             rent.invoice_date=timezone.now().date()
             rent.save()
             self.save_m2m()
-            rentaux2= Rent()
-            rentaux= Rent.objects.get(id=rent.id)
+
+            rent_aux = Rent.objects.get(id=rent.id)
 
             #calculo el total de la factura
             total=0
-            for vehicle in rentaux.vehicles.all():
-                total= total + vehicle.vehicle_type.price
+            for vehicle in rent_aux.vehicles.all():
+                total = total + vehicle.vehicle_type.price
             dias = rent.end_date - rent.start_date 
-            rent.total=total*dias.days
-          
+            rent.total = total*dias.days
             rent.save()
-
-            
-
-#            for vehicle in rent.vehicles:
-#                total= total + vehicle.vehicle_type.price
-#            rent.total=total
-#            rent.save()
         return rent
-    def save_m2m(self, commit=True):
-        vehiculos= self.cleaned_data.get('vehicles')
-        print("vehicles:", vehiculos)
-        super().save_m2m()  # Llama al método original para guardar las relaciones ManyToMany        
 
-#            for vehicle in rent.vehicles:
-#                total= total + vehicle.vehicle_type.price
-#            rent.total=total
-#            rent.save()
-    
+    def save_m2m(self, commit=True):
+        vehicles= self.cleaned_data.get('vehicles')
+        print("vehicles:", vehicles)
+        super().save_m2m()  # Llama al método original para guardar las relaciones ManyToMany        

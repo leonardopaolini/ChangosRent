@@ -27,7 +27,7 @@ environ.Env.read_env(os.getenv('DJANGO_ENV_FILE', '.env'))
 SECRET_KEY = 'django-insecure-8an6)1#q^u3n%sjh272&yuk72q@0ii)2n0y-#h6ori#*cpz0_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG_APP')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'changosrent.onrender.com', '0.0.0.0']
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,12 +125,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/webapp/static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "webapp/static/web"),
-    os.path.join(BASE_DIR, "webapp/static/web/template"),
+    os.path.join(BASE_DIR, 'webapp/static/web'),
+    os.path.join(BASE_DIR, 'webapp/static/web/template'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')\
+
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
