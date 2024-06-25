@@ -1,15 +1,42 @@
 {% extends "template.html" %}
+{% load static %}
 {% block titulo %}
     <p>Listado de Vehiculos</p>
 {% endblock%}
+{% block extra_files %}
+    <link href="{% static 'plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
 {% block menu %}
     <a href="{% url 'home' %}">Volver</a>
 {% endblock  %}
 {% block main %}
  <h2>Listado de Vehiculos</h2>
      <a href="{% url 'home' %}">Volver</a>
-
-    <section class="listado_vehiculos">
+     <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Año</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for vehicle in vehicles %}
+            <tr>
+            <td scope="row">{{ vehicle.id }}</td>
+            <td>{{ vehicle.brand }}</td>
+            <td>{{ vehicle.model }}</td>
+            <td>{{ vehicle.year }}</td>
+            <td><a class="button" href="{% url 'edit_vehicle' vehicle.id %}">Editar</a></td>            
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+<!--     <section class="listado_vehiculos">
         {% for vehicle in vehicles %}
             <article>
                 <p>Id: {{ vehicle.id }} </p>
@@ -23,5 +50,5 @@
                 <p>No existen vehiculos</p>
             </article>
         {% endfor %}
-    </section>
+    </section> -->
 {% endblock %}
