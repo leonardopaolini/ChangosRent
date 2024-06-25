@@ -33,12 +33,17 @@ class Person(Customer):
     birth_date = models.DateField(null=True)
     person_id = models.BigIntegerField(unique=True)
 
+    def __str__(self):
+        return f"{self.last_name} {self.first_name}"
+
 
 class Company(Customer):
     business_name = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     business_type = models.CharField(max_length=CHAR_GENERAL_MAX_LENGTH)
     business_id = models.BigIntegerField(unique=True)
 
+    def __str__(self):
+        return f"{self.business}"
 
 class VehicleType(models.Model):
     id = models.AutoField(primary_key=True)

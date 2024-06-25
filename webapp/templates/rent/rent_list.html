@@ -17,7 +17,14 @@
                 <p>Cliente: {{ rent.customer_object }}</p>
                 <p>Fecha desde: {{ rent.start_date }} </p>
                 <p>Fecha hasta: {{ rent.end_date }} </p>
-                <p>Vehiculos: {{ rent.vehicles }} </p>
+                <p>Vehiculos:</p>
+                {% for vehicle in rent.vehicles.all %}
+                    <p> {{ vehicle }} </p>
+                    {% empty %}
+                    <article>
+                        <p>No existen vehiculos</p>
+                    </article>
+                {% endfor %}
                 <p>Monto total: {{ rent.total }} </p>
             </article>
 

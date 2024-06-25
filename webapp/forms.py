@@ -173,10 +173,6 @@ class CreateRentForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        #obtener usuario logueado
-        #a partir de este usuario obtener persona o empresa (customer)
-        # poner esta instancia en la renta
-        #y fin
         rent= super().save(commit=False)
         if commit:
             user= self.user
@@ -192,7 +188,6 @@ class CreateRentForm(forms.ModelForm):
 
             rent_aux = Rent.objects.get(id=rent.id)
 
-            #calculo el total de la factura
             total=0
             for vehicle in rent_aux.vehicles.all():
                 total = total + vehicle.vehicle_type.price
