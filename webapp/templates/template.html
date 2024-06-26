@@ -10,66 +10,270 @@
     <link src="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
     <link href="{% static 'plugins/material/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'plugins/simplebar/simplebar.css' %}" rel="stylesheet"/>
-    <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet"/>
     <link href="{% static 'plugins/prism/prism.css' %}" rel="stylesheet"/>
     <link href="{% static 'plugins/select2/css/select2.min.css' %}" rel="stylesheet"/>
     <link id="main-css-href" rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <link href="{% static 'images/favicon.png' %}" rel="shortcut icon"/>
+    <link href="{% static 'plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/jvectormap/jquery-jvectormap-2.0.3.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet"/>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="{% static 'plugins/toaster/toastr.min.css' %}" rel="stylesheet"/>
+    <!-- MONO CSS -->
+    <link id="main-css-href" rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
+    <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet"/>
 </head>
-<body id="body" class="bg-light-gray">
-    <header>
-        {% block menu %}
-            {% include menu %}
-        {% endblock %}
-        {% block actions %}
-            <div class="actions">
-                {% if user.is_authenticated %}
-                    <a class="logout button" href="{% url 'logout' %}">Cerrar Sesión</a> {% endif %}
+<body id="body" class="navbar-fixed sidebar-fixed">
+{% block menu %}
+<div id="toaster"></div>
+<div class="wrapper">
+    <aside class="left-sidebar sidebar-dark" id="left-sidebar">
+        <div id="sidebar" class="sidebar sidebar-with-footer">
+            <!-- Aplication Brand -->
+            <div class="app-brand">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'images/logo-xs.png' %}" alt="Changos">
+                    <span class="brand-name">Changos Rent</span>
+                </a>
             </div>
-        {% endblock %}
-        {% block messages %}
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }}</li>
-                    {% endfor %}
+            <!-- begin sidebar scrollbar -->
+            <div class="sidebar-left" data-simplebar style="height: 100%;">
+                <!-- sidebar menu -->
+                <ul class="nav sidebar-inner" id="sidebar-menu">
+                    <li class="section-title">
+                        Alquileres
+                    </li>
+                    <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#email"
+                           aria-expanded="false" aria-controls="email">
+                            <i class="mdi mdi-home-currency-usd"></i>
+                            <span class="nav-text">Administrar Alquileres</span> <b class="caret"></b>
+                        </a>
+                        <ul class="collapse" id="email"
+                            data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'create_rent' %}">
+                                        <span class="nav-text">Nuevo Alquiler</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'list_rent' %}">
+                                        <span class="nav-text">Gestionar Alquileres</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="section-title">
+                        Clientes
+                    </li>
+                    <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#ui-elements"
+                           aria-expanded="false" aria-controls="ui-elements">
+                            <i class="mdi mdi-account-group"></i>
+                            <span class="nav-text">Administrar Personas</span> <b class="caret"></b>
+                        </a>
+
+                        <ul class="collapse" id="ui-elements"
+                            data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="alert.html">
+                                        <span class="nav-text">Nueva Persona</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="badge.html">
+                                        <span class="nav-text">Lista Personas</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#charts"
+                           aria-expanded="false" aria-controls="charts">
+                            <i class="mdi mdi-chart-line"></i>
+                            <span class="nav-text">Administar Empresas</span> <b class="caret"></b>
+                        </a>
+                        <ul class="collapse" id="charts"
+                            data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="alert.html">
+                                        <span class="nav-text">Nueva Empresa</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="badge.html">
+                                        <span class="nav-text">Gestionar Empresas</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="section-title">
+                        Vehículos
+                    </li>
+                    <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#users"
+                           aria-expanded="false" aria-controls="users">
+                            <i class="mdi mdi-car"></i>
+                            <span class="nav-text">Tipos de Vehiculos</span> <b class="caret"></b>
+                        </a>
+                        <ul class="collapse" id="users"
+                            data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'create_vehicle_type' %}">
+                                        <span class="nav-text">Nuevo Tipo de Vehículo</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'list_vehicle_type' %}">
+                                        <span class="nav-text">Gestionar Tipos de Vehículos</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#authentication"
+                           aria-expanded="false" aria-controls="authentication">
+                            <i class="mdi mdi-car-hatchback"></i>
+                            <span class="nav-text">Administar Vehículos</span> <b class="caret"></b>
+                        </a>
+                        <ul class="collapse" id="authentication"
+                            data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'create_vehicle' %}">
+                                        <span class="nav-text">Nuevo Vehículo</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="{% url 'list_vehicle' %}">
+                                        <span class="nav-text">Gestionar Vehículos</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="section-title">
+                        Mis Alquileres
+                    </li>
+                    <li>
+                        <a class="sidenav-item-link" href="{% url 'create_rent' %}">
+                            <i class="mdi mdi-car-sports"></i>
+                            <span class="nav-text">Alquilar un Vehículo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidenav-item-link" href="{% url 'list_rent' %}">
+                            <i class="mdi mdi-car-multiple"></i>
+                            <span class="nav-text">Mis Alquileres</span>
+                        </a>
+                    </li>
                 </ul>
-            {% endif %}
+            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-content">
+                    <ul class="d-flex">
+                        <li>
+                            <a href="user-account-settings.html" data-toggle="tooltip" title="Mi Perfil">
+                                <i class="mdi mdi-settings"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-link-item" href="{% url 'logout'%}" title="Cerrar Sesión">
+                                <i class="mdi mdi-logout"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <div class="page-wrapper">
+        <header class="main-header" id="header">
+            <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+                <!-- Sidebar toggle button -->
+                <button id="sidebar-toggler" class="sidebar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <span class="page-title">Tu Menú</span>
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account -->
+                    <li class="dropdown user-menu">
+                        <button class="dropdown-toggle nav-link" data-toggle="dropdown">
+                            <span class="d-none d-lg-inline-block">John Doe</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a class="dropdown-link-item" href="user-profile.html">
+                                    <i class="mdi mdi-account-outline"></i>
+                                    <span class="nav-text">Mi Perfil</span>
+                                </a>
+                            </li>
+                            <li class="dropdown-footer">
+                                <a class="dropdown-link-item" href="{% url 'logout'%}"> <i class="mdi mdi-logout"></i>
+                                    Cerrar Sesión </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <footer class="footer mt-auto justify-content-center">
+        {% block footer %}
+            <div class="copyright bg-white">
+                <p>
+                    L&P <span id="copy-year"></span> - Todos los derechos reservados
+                </p>
+            </div>
+            <script>
+                const year = new Date().getFullYear();
+                document.getElementById("copy-year").innerHTML = year;
+            </script>
         {% endblock %}
-        {% if error %}
-            <p id="pageError" style="color: red;">{{ error }}</p>
-        {% endif %}
-    </header>
-    <main class="centered">
-        {% block main %}{% endblock %}
-    </main>
-    <script src="{% static 'js/commons.js' %}" defer></script>
-    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
-    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
-    <script src="{% static 'plugins/prism/prism.js' %}"></script>
-    <script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
-    <script src="{% static 'plugins/jquery-mask-input/jquery.mask.min.js' %}"></script>
-    <script src="{% static 'js/mono.js' %}"></script>
-    <script src="{% static 'js/chart.js' %}"></script>
-    <script src="{% static 'js/map.js' %}"></script>
-    <script src="{% static 'js/custom.js' %}"></script>
-</body>
-<footer class="footer mt-auto justify-content-center">
-    {% block footer %}
-    {% endblock %}
-    <div class="copyright bg-white">
-        <p>
-            L&P <span id="copy-year"></span> - Todos los derechos reservados
-        </p>
+        </footer>
     </div>
-    <script>
-        const year = new Date().getFullYear();
-        document.getElementById("copy-year").innerHTML = year;
-    </script>
-</footer>
+</div>
+{% endblock %}
+{% block main %}
+    aca va el contenido
+{% endblock %}
+<script src="{% static 'js/commons.js' %}" defer></script>
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+<script src="{% static 'plugins/apexcharts/apexcharts.js' %}"></script>
+
+
+<script src="{% static 'plugins/jvectormap/jquery-jvectormap-2.0.3.min.js' %}"></script>
+<script src="{% static 'plugins/jvectormap/jquery-jvectormap-world-mill.js' %}"></script>
+<script src="{% static 'plugins/jvectormap/jquery-jvectormap-us-aea.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'plugins/prism/prism.js' %}"></script>
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mask-input/jquery.mask.min.js' %}"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="{% static 'plugins/toaster/toastr.min.js' %}"></script>
+<script src="{% static 'js/mono.js' %}"></script>
+<script src="{% static 'js/chart.js' %}"></script>
+<script src="{% static 'js/map.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+</body>
 </html>
