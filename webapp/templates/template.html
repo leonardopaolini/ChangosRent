@@ -42,6 +42,7 @@
             <div class="sidebar-left" data-simplebar style="height: 100%;">
                 <!-- sidebar menu -->
                 <ul class="nav sidebar-inner" id="sidebar-menu">
+                    {% if user.is_staff %}
                     <li class="section-title">
                         Alquileres
                     </li>
@@ -167,6 +168,8 @@
                             </div>
                         </ul>
                     </li>
+                    {% endif %}
+                    {% if not user.is_staff %}
                     <li class="section-title">
                         Mis Alquileres
                     </li>
@@ -182,6 +185,7 @@
                             <span class="nav-text">Mis Alquileres</span>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="sidebar-footer">
@@ -202,6 +206,8 @@
             </div>
         </div>
     </aside>
+{% endblock %}
+{% block page-home %}
     <div class="page-wrapper">
         <header class="main-header" id="header">
             <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
@@ -215,7 +221,13 @@
                     <!-- User Account -->
                     <li class="dropdown user-menu">
                         <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <span class="d-none d-lg-inline-block">John Doe</span>
+                            <span class="d-none d-lg-inline-block">
+                                {% if user.last_name and user.last_name %}
+                                    {{ user.first_name }} {{ user.last_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
@@ -233,6 +245,17 @@
                 </ul>
             </nav>
         </header>
+
+            <!-- ====================================
+        ——— CONTENT WRAPPER
+        ===================================== -->
+        <div class="content-wrapper">
+            <div class="content">
+                <!-- Top Statistics -->
+                {% block main %}
+                {% endblock %}
+            </div>
+        </div>
         <footer class="footer mt-auto justify-content-center">
         {% block footer %}
             <div class="copyright bg-white">
@@ -247,11 +270,9 @@
         {% endblock %}
         </footer>
     </div>
+    {% endblock %}
 </div>
-{% endblock %}
-{% block main %}
-    aca va el contenido
-{% endblock %}
+
 <script src="{% static 'js/commons.js' %}" defer></script>
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

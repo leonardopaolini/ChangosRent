@@ -2,9 +2,6 @@
 {% block titulo %}
     <p>Alta de alquiler</p>
 {% endblock%}
-{% block menu %}
-    <a href="{% url 'home' %}">Volver</a>
-{% endblock  %}
 {% block main %}
     <form method="post" novalidate>
         {% csrf_token %}

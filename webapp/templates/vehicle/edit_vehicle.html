@@ -2,9 +2,6 @@
 {% block titulo %}
     <p>Edición de Vehiculo</p>
 {% endblock%}
-{% block menu %}
-    <a href="{% url 'home' %}">Volver</a>
-{% endblock  %}
 {% block main %}
     <h1>Editar Vehiculo: {{ vehicle.model }}</h1>
     <form method="post" novalidate>
