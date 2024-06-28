@@ -5,8 +5,53 @@
 {% block main %}
     <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p  }}
-        <button type="submit">Guardar</button>
+        <!-- {{ form.as_p  }} -->
+
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            <small class="text-danger">{{ form.name.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            <small class="text-danger">{{ form.description.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.type_of_uses.label_tag }}
+            {{ form.type_of_uses }}
+            <small class="text-danger">{{ form.type_of_uses.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.km_per_maintenance.label_tag }}
+            {{ form.km_per_maintenance }}
+            <small class="text-danger">{{ form.km_per_maintenance.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            <small class="text-danger">{{ form.price.errors }}</small>
+        </div>
+
+
+<!--         <div class="col-md-12 mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            <small class="text-daborder-danger small mt-1">{{ form.name.errors }}</small>
+
+        </div>
+ --><!--         <div class="col-md-12 mb-3">
+            {{ form.name.label_tag }}
+            <input type="text" class="form-control border-danger" id="validationServer02" placeholder="Last name"
+              value="Last Name" required>
+            <div class="text-daborder-danger small mt-1">
+              Sorry, that username's taken. Try another?
+            </div>
+          </div>
+        </div>
+ -->
+
+        <button class="btn btn-primary btn-pill mr-2" type="submit">Guardar</button>
     </form>
     {% if error %}
         <p style="color: red;">{{ error }}</p>

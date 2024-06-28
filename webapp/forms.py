@@ -7,23 +7,23 @@ from django.utils  import timezone
 from django.core.exceptions import ValidationError
 import datetime
 
-
 class CreateVehicleTypeForm(forms.ModelForm):
+
     class Meta:
         model = VehicleType
         fields = ['name', 'description', 'type_of_uses', 'km_per_maintenance', 'price']
         error_messages = vehicle_type_error_messages
 
     name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                           widget=forms.TextInput(attrs={'placeholder': 'Nombre'}), label='Nombre')
+                           widget=forms.TextInput(attrs={'placeholder': 'Nombre','class':'form-control border-danger'}), label='Nombre')
     description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción'}), label='Descripción')
+                                widget=forms.TextInput(attrs={'placeholder': 'Descripción','class':'form-control border-danger'}), label='Descripción')
     type_of_uses = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                   widget=forms.TextInput(attrs={'placeholder': 'Tipo de Usos'}), label='Tipo de Usos')
+                                widget=forms.TextInput(attrs={'placeholder': 'Tipo de Usos','class':'form-control border-danger'}), label='Tipo de Usos')
     km_per_maintenance = forms.IntegerField(required=True, widget=forms.NumberInput(
-        attrs={'placeholder': 'Km por Mantenimiento'}), label='Km por Mantenimiento')
+        attrs={'placeholder': 'Km por Mantenimiento','class':'form-control border-danger'}), label='Km por Mantenimiento')
     price = forms.DecimalField(max_digits=7, decimal_places=2, required=True,
-                               widget=forms.NumberInput(attrs={'placeholder': 'Precio'}), label='Precio')
+                            widget=forms.NumberInput(attrs={'placeholder': 'Precio','class':'form-control border-danger'}), label='Precio')
 
 
 class SignUpCompanyCustomerForm(forms.ModelForm):
@@ -130,23 +130,24 @@ class CreateVehicleForm(forms.ModelForm):
         error_messages = vehicle_error_messages
 
     brand = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                            widget=forms.TextInput(attrs={'placeholder': 'Marca'}), label='Marca')
+                            widget=forms.TextInput(attrs={'placeholder': 'Marca','class':'form-control border-danger'}), label='Marca')
     model = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                            widget=forms.TextInput(attrs={'placeholder': 'Modelo'}), label='Modelo')
+                            widget=forms.TextInput(attrs={'placeholder': 'Modelo','class':'form-control border-danger'}), label='Modelo')
     year = forms.IntegerField(min_value=2000, max_value=2100, required=True,
-                              widget=forms.NumberInput(attrs={'placeholder': 'Año'}), label='Año')
+                              widget=forms.NumberInput(attrs={'placeholder': 'Año','class':'form-control border-danger'}), label='Año')
     description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción'}),
+                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción','class':'form-control border-danger'}),
                                   label='Descripción')
     buy_date = forms.DateField(
         input_formats=['%m/%d/%Y', '%d/%m/%Y'],
         widget=forms.DateInput(format='%m/%d/%Y',
-                               attrs={'class': 'form-control mydatepicker', 'data-mask': '00/00/0000'}), required=True,
+                               attrs={'class': 'form-control mydatepicker form-control border-danger', 'data-mask': '00/00/0000'}), required=True,
         label='Fecha de Compra')
     # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
 
 
 class CreateRentForm(forms.ModelForm):
+    
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(CreateRentForm, self).__init__(*args, **kwargs)
