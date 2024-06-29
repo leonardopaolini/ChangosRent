@@ -24,8 +24,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet"/>
+    <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
+
 </head>
 <body id="body" class="navbar-fixed sidebar-fixed">
+    <!-- <script>
+        NProgress.configure({ showSpinner: false });
+        NProgress.start();
+    </script> -->
+  
 {% block menu %}
 <div id="toaster"></div>
 <div class="wrapper">
@@ -296,5 +303,6 @@
 <script src="{% static 'js/chart.js' %}"></script>
 <script src="{% static 'js/map.js' %}"></script>
 <script src="{% static 'js/custom.js' %}"></script>
+
 </body>
 </html>
