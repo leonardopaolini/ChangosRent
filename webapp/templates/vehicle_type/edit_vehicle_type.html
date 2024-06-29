@@ -6,8 +6,34 @@
     <h1>Editar Tipo de Vehiculo: {{ vehicle_type.name }}</h1>
     <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p  }}
-        <button type="submit">Actualizar</button>
+        <!-- {{ form.as_p  }}
+        <button type="submit">Actualizar</button> -->
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            <small class="text-danger">{{ form.name.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            <small class="text-danger">{{ form.description.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.type_of_uses.label_tag }}
+            {{ form.type_of_uses }}
+            <small class="text-danger">{{ form.type_of_uses.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.km_per_maintenance.label_tag }}
+            {{ form.km_per_maintenance }}
+            <small class="text-danger">{{ form.km_per_maintenance.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            <small class="text-danger">{{ form.price.errors }}</small>
+        </div>
+        <button class="btn btn-primary btn-pill mr-2" type="submit">Guardar</button>
     </form>
     {% if error %}
         <p style="color: red;">{{ error }}</p>

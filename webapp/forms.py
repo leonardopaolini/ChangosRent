@@ -2,10 +2,30 @@ from django import forms
 from django.contrib.auth.models import User
 
 from webapp.common.validation.form_error_messages import *
-from webapp.models import Rent, VehicleType, Vehicle, Person, Company, Customer
+from webapp.models import Rent, VehicleType, Vehicle, Person, Company, Customer,VehicleStatus
 from django.utils  import timezone
 from django.core.exceptions import ValidationError
 import datetime
+
+class MyDateInput(forms.widgets.DateInput):
+    input_type = 'date'
+    #format = '%d/%m/%Y'
+    def __init__(self, attrs=None, format=None):
+        # Agrega los atributos que desees aquí
+        default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha'}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(attrs=default_attrs, format=format)    
+
+class MyInput(forms.widgets.DateInput):
+    input_type = 'date'
+    def __init__(self, attrs=None, format=None):
+        # Agrega los atributos que desees aquí
+        default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha','data-mask': '00/00/0000'}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(attrs=default_attrs, format=format)    
+
 
 class CreateVehicleTypeForm(forms.ModelForm):
 
@@ -138,12 +158,18 @@ class CreateVehicleForm(forms.ModelForm):
     description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
                                   widget=forms.TextInput(attrs={'placeholder': 'Descripción','class':'form-control border-danger'}),
                                   label='Descripción')
+    # buy_date = forms.DateField(
+    #     input_formats=['%m/%d/%Y', '%d/%m/%Y'],
+    #     widget=forms.MiDateInput(format='%m/%d/%Y',
+    #                            attrs={'class': 'form-control mydatepicker form-control border-danger', 'data-mask': '00/00/0000'}), required=True,
+    #     label='Fecha de Compra')
+#    'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
     buy_date = forms.DateField(
-        input_formats=['%m/%d/%Y', '%d/%m/%Y'],
-        widget=forms.DateInput(format='%m/%d/%Y',
-                               attrs={'class': 'form-control mydatepicker form-control border-danger', 'data-mask': '00/00/0000'}), required=True,
-        label='Fecha de Compra')
-    # 'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
+#        input_formats=['%m/%d/%Y', '%d/%m/%Y'],
+        widget=MyDateInput(),
+        required=True,
+        label='Fecha de Compra'
+        )
 
 
 class CreateRentForm(forms.ModelForm):
@@ -163,6 +189,35 @@ class CreateRentForm(forms.ModelForm):
             'payment_method' : 'Forma de pago',
  #           'total': 'Total',
         }
+
+
+    payment_method= forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Forma de pago','class':'form-control border-danger'}),label='Forma de pago')
+    start_date = forms.DateField(
+        #input_formats=['%d/%m/%Y'],
+        #input_formats=['%m/%d/%Y', '%d/%m/%Y'],
+        # widget=forms.DateInput(format='%m/%d/%Y',
+        #      attrs={'class': 'form-control form-control border-danger', 'data-mask': '00/00/0000'}), 
+        widget=MyDateInput(),
+        required=True,
+        label='Fecha desde')
+    end_date = forms.DateField(
+        #input_formats=['%m/%d/%Y', '%d/%m/%Y'],
+        widget=MyDateInput(),
+        required=True,
+        label='Fecha hasta')
+    vehicles= forms.MultipleChoiceField(
+        choices=[(item.pk, item) for item in Vehicle.objects.filter(status = VehicleStatus.READY_FOR_USE.value).order_by('model')],
+        required=True,
+        widget=forms.SelectMultiple(attrs={'placeholder': 'Vehiculos','class':'form-control border-danger'}),
+        label='Vehiculos'
+
+    )
+#    vehicles= forms.CharField(required=True,
+#        widget=forms.TextInput(attrs={'placeholder': 'Vehiculos','class':'form-control border-danger'}),label='Vehiculos')
+
+
+
     def clean(self):
         cleaned_data = super().clean()
         start_date= cleaned_data.get("start_date")

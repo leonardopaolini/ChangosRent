@@ -24,7 +24,7 @@
             <tr>
             <td scope="row">{{ type.id }}</td>
             <td>{{ type.name }}</td>
-            <td>{{ type.price }}</td>
+            <td>${{ type.price }}</td>
             <td><a class="button" href="{% url 'edit_vehicle_type' type.id %}">Editar</a></td>            
           </tr>
         {% endfor %}

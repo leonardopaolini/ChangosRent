@@ -1,8 +1,55 @@
 {% extends "template.html" %}
+{% load static %}
 {% block titulo %}
     <p>Listado de alquileres</p>
 {% endblock%}
+{% block extra_files %}
+    <link href="{% static 'plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block main %}
+
+
+<h2>Listado de tipos de Vehiculos</h2>
+<a href="{% url 'home' %}">Volver</a>
+<table class="table">
+   <thead>
+     <tr>
+       <th scope="col">#</th>
+       <th scope="col">Fecha factura</th>
+       <th scope="col">Cliente</th>
+       <th scope="col">Fecha desde</th>
+       <th scope="col">Fecha hasta</th>
+       <th scope="col">Vehiculos</th>
+       <th scope="col">total</th>
+       <!-- <th class="text-center">Action</th> -->
+     </tr>
+   </thead>
+   <tbody>
+    {% for rent in rents %}
+    <tr>
+       <td scope="row">{{ rent.id }}</td>
+       <td>{{ rent.invoice_date }}</td>
+       <td>{{ rent.customer_object }}</td>
+       <td>{{ rent.start_date }}</td>
+       <td>{{ rent.end_date }}</td>
+       <td>
+            {% for vehicle in rent.vehicles.all %}
+                <p> {{ vehicle }} </p>
+            {% empty %}
+                <article>
+                    <p>No existen vehiculos</p>
+                </article>
+            {% endfor %}
+       </td>
+       <td>${{ rent.total }}</td>
+     </tr>
+   {% endfor %}
+   </tbody>
+ </table>
+
+
+<!-- 
  <h2>Listado de alquileres</h2>
      <a href="{% url 'home' %}">Volver</a>
 
@@ -30,5 +77,5 @@
                 <p>No existen alquileres</p>
             </article>
         {% endfor %}
-    </section>
+    </section> -->
 {% endblock %}

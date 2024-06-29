@@ -5,8 +5,34 @@
 {% block main %}
     <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p  }}
-        <button type="submit">Guardar</button>
+        <!-- {{ form.as_p  }} -->
+        <!-- <button type="submit">Guardar</button> -->
+
+        <div class="form-group">
+            {{ form.start_date.label_tag }}
+            {{ form.start_date }}
+            <small class="text-danger">{{ form.start_date.errors }}</small>
+        </div>
+
+        <div class="form-group">
+            {{ form.end_date.label_tag }}
+            {{ form.end_date }}
+            <small class="text-danger">{{ form.end_date.errors }}</small>
+        </div>
+
+        <div class="form-group">
+            {{ form.payment_method.label_tag }}
+            {{ form.payment_method }}
+            <small class="text-danger">{{ form.payment_method.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.vehicles.label_tag }}
+            {{ form.vehicles }}
+            <small class="text-danger">{{ form.vehicles.errors }}</small>
+        </div>
+
+        <button class="btn btn-primary btn-pill mr-2" type="submit">Guardar</button>
+
     </form>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
