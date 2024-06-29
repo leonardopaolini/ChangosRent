@@ -117,6 +117,7 @@ def signup_company(request):
             user = authenticate(username=company.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
+                notify(form)
                 return redirect_to_home()
     else:
         form = SignUpCompanyCustomerForm()

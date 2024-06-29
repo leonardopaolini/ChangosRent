@@ -153,3 +153,41 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/login"
 LOGOUT_REDIRECT_URL = '/webapp'
+
+# Logging Module
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname}-{asctime}-{module}-{message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{asctime}-{levelname}-{message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'ERROR',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'webapp': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False
+        },
+    }
+}

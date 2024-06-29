@@ -1,9 +1,11 @@
 from __future__ import print_function
 import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
-from pprint import pprint
 from ChangosRent.settings import SMTP_API_KEY, DEFAULT_CC_EMAIL, DEFAULT_CC_NAME, DEFAULT_FROM_EMAIL
 from webapp.forms import SignUpCompanyCustomerForm, SignUpPersonCustomerForm
+import logging
+
+logger = logging.getLogger('webapp')
 
 
 def notify(form):
@@ -23,17 +25,20 @@ class EmailMessage(object):
 
     @staticmethod
     def create_message(form):
+        logger.info("Creating email message")
         email_message = None
         subject = "Alta Cliente"
         copy_to = [{"name": DEFAULT_CC_NAME, "email": DEFAULT_CC_EMAIL}]
         sender = {"name": "Changos Rent Vehiculos", "email": DEFAULT_FROM_EMAIL}
-        if  isinstance(form, SignUpPersonCustomerForm):
+        if isinstance(form, SignUpPersonCustomerForm):
+            logger.info("Creating email message for Person Customer")
             body = EmailMessage.to_body(f"{form.cleaned_data['first_name']}, {form.cleaned_data['last_name']}")
             receiver = [{"email": f"{form.cleaned_data['email']}",
                          "name": f"{form.cleaned_data['first_name']}, {form.cleaned_data['last_name']}"}]
             email_message = EmailMessage.create(sender, receiver, subject, body, copy_to=copy_to,
                                                 reply_to_email=None).build()
         if isinstance(form, SignUpCompanyCustomerForm):
+            logger.info("Creating email message for Company Customer")
             body = EmailMessage.to_body(f"{form.cleaned_data['business_name']}")
             receiver = [{"email": f"{form.cleaned_data['email']}",
                          "name": f"{form.cleaned_data['first_name']}, {form.cleaned_data['last_name']}"}]
@@ -68,10 +73,13 @@ class EmailApiClient(object):
 
     def send(self, email_message):
         try:
+            logger.info(f"Sending email message to {email_message.to}")
             api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(self.configuration))
             api_response = api_instance.send_transac_email(email_message)
-            pprint(api_response)
+            logging.info(api_response)
         except ApiException as e:
-            print("Exception calling SMTP Api: %s\n" % e)
+            logger.error(e.body)
+            print("ApiException calling SMTP Api: %s\n" % e)
         except Exception as e:
+            logger.error(e.__traceback__)
             print("Exception calling SMTP Api: %s\n" % e)
