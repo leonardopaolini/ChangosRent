@@ -72,14 +72,14 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
     business_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
                                     required=True,
                                     widget=forms.TextInput(
-                                        attrs={'placeholder': 'Nombre de Compañía', 'class': 'form-control input-lg'}), label="Nombre de Compañía")
+                                        attrs={'placeholder': 'Nombre de Empresa', 'class': 'form-control input-lg'}), label="Nombre de Empresa")
     business_type = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
                                     widget=forms.TextInput(
-                                        attrs={'placeholder': 'Tipo de Compañía', 'class': 'form-control input-lg'}), label="Tipo de Compañía")
+                                        attrs={'placeholder': 'Tipo de Empresa', 'class': 'form-control input-lg'}), label="Tipo de Empresa")
     business_id = forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
                                      required=True,
-                                     widget=forms.NumberInput(attrs={'placeholder': 'Id de Compañía', 'class': 'form-control input-lg'}),
-                                     label="Id de Compañía")
+                                     widget=forms.NumberInput(attrs={'placeholder': 'Id de Empresa', 'class': 'form-control input-lg'}),
+                                     label="Id de Empresa")
 
     def save(self, commit=True):
         company = super().save(commit=False)
