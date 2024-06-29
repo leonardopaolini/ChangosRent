@@ -5,7 +5,7 @@ from webapp.common.constants import *
 from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, CreateRentForm
 from webapp.models import VehicleType, Vehicle, Rent
 from webapp.common.utils.views_utils import get_menu, redirect_to_login, redirect_to_home
-
+from webapp.common.api.email_api_client import notify
 
 def index(request):
     return redirect_to_login()
@@ -100,6 +100,7 @@ def signup_person(request):
             user = authenticate(username=person.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
+                notify(form)
                 return redirect_to_home()
     else:
         form = SignUpPersonCustomerForm()
@@ -176,10 +177,10 @@ def create_rent(request):
     return render(request, 'rent/create_rent.html', context)
 
 
-
 @login_required(login_url='login')
 def list_rent(request):
     context = {}
     rents = Rent.objects.all().order_by('invoice_date')
     context['rents'] = rents
     return render(request, 'rent/rent_list.html', context)
+

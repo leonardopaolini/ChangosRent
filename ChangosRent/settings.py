@@ -29,6 +29,13 @@ SECRET_KEY = 'django-insecure-8an6)1#q^u3n%sjh272&yuk72q@0ii)2n0y-#h6ori#*cpz0_k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG_APP')
 
+# EMAIL API CLIENT
+SMTP_API_KEY = env('BREVO_SMTP_API_KEY')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+DEFAULT_CC_EMAIL = env('DEFAULT_CC_EMAIL')
+DEFAULT_CC_NAME = env('DEFAULT_CC_NAME')
+
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'changosrent.onrender.com', '0.0.0.0']
 
 
