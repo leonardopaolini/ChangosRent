@@ -105,7 +105,7 @@ def signup_person(request):
     else:
         form = SignUpPersonCustomerForm()
     context['form'] = form
-    return render(request, 'customer/signup/signup_customer.html', context)
+    return render(request, 'customer/signup/person/signup_customer.html', context)
 
 
 def signup_company(request):
@@ -122,7 +122,7 @@ def signup_company(request):
     else:
         form = SignUpCompanyCustomerForm()
     context['form'] = form
-    return render(request, 'customer/signup/signup_customer.html', context)
+    return render(request, 'customer/signup/company/signup_customer.html', context)
 
 
 @login_required(login_url='login')

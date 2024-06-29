@@ -47,13 +47,33 @@
 
                                         <button type="submit" class="btn btn-primary btn-pill mb-4 align-content-center">Ingresar</button>
                                         <p>No tenés tu cuenta?
-                                            <a class="text-blue" href="{% url 'signup_customer' %}">Registrarse</a>
+                                            <a class="text-blue" data-toggle="modal" data-target="#exampleModal">Registrarse</a>
                                         </p>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Vamos que ya queda menos para tu registro!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Por favor, seleccioná si sos Persona ó Empresa
+                </div>
+                <div class="modal-footer">
+                    <a  class="button btn btn-primary btn-pill"  href="{% url 'signup_person' %}">Persona</a>
+                    <a  class="button btn btn-primary btn-pill"   href="{% url 'signup_company' %}">Empresa</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block extra_files %} {% endblock %}
     <title>El Chango - Vehiculos de Alquiler- {% block titulo %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/base.css' %}">
     <link src="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
@@ -25,7 +24,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet"/>
     <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
-
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'js/commons.js' %}" ></script>
+    {% block extra_files %} {% endblock %}
 </head>
 <body id="body" class="navbar-fixed sidebar-fixed">
     <!-- <script>
@@ -40,8 +42,10 @@
             <!-- Aplication Brand -->
             <div class="app-brand">
                 <a href="{% url 'index' %}">
+
                     <img src="{% static 'images/logo-xs.png' %}" alt="Changos">
                     <span class="brand-name">Changos Rent</span>
+
                 </a>
             </div>
             <!-- begin sidebar scrollbar -->
@@ -279,8 +283,8 @@
     {% endblock %}
 </div>
 
-<script src="{% static 'js/commons.js' %}" defer></script>
-<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
 <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -301,7 +305,5 @@
 <script src="{% static 'js/mono.js' %}"></script>
 <script src="{% static 'js/chart.js' %}"></script>
 <script src="{% static 'js/map.js' %}"></script>
-<script src="{% static 'js/custom.js' %}"></script>
-
 </body>
 </html>

@@ -41,7 +41,7 @@ class EmailMessage(object):
             logger.info("Creating email message for Company Customer")
             body = EmailMessage.to_body(f"{form.cleaned_data['business_name']}")
             receiver = [{"email": f"{form.cleaned_data['email']}",
-                         "name": f"{form.cleaned_data['first_name']}, {form.cleaned_data['last_name']}"}]
+                         "name": f"{form.cleaned_data['business_name']}"}]
             email_message = EmailMessage.create(sender, receiver, subject, body, copy_to=copy_to,
                                                 reply_to_email=None).build()
         return email_message

@@ -43,7 +43,8 @@ class Company(Customer):
     business_id = models.BigIntegerField(unique=True)
 
     def __str__(self):
-        return f"{self.business}"
+        return f"{self.business_name}"
+
 
 class VehicleType(models.Model):
     id = models.AutoField(primary_key=True)

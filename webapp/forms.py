@@ -48,15 +48,15 @@ class CreateVehicleTypeForm(forms.ModelForm):
 
 class SignUpCompanyCustomerForm(forms.ModelForm):
     user_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, label='Usuario',
-                                widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
+                                widget=forms.TextInput(attrs={'placeholder': 'Nombre', 'class': 'form-control input-lg'}))
     password = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH, required=True,
                                label='Contraseña',
-                               widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class': 'form-control input-lg'}))
     password_confirm = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH,
                                        required=True,
                                        label='Confirmar Contraseña',
                                        widget=forms.PasswordInput(
-                                           attrs={'placeholder': 'Confirmar Contraseña'}))
+                                           attrs={'placeholder': 'Confirmar Contraseña', 'class': 'form-control input-lg'}))
 
     class Meta:
         model = Company
@@ -64,22 +64,22 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
                   'business_id']
         error_messages = company_error_messages
 
-        email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                 widget=forms.TextInput(attrs={'placeholder': 'Email'}), label="Email")
-        address = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                  widget=forms.TextInput(
-                                      attrs={'placeholder': 'Dirección'}), label="Dirección")
-        business_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
-                                        required=True,
-                                        widget=forms.TextInput(
-                                            attrs={'placeholder': 'Nombre de Compañía'}), label="Nombre de Compañía")
-        business_type = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                                        widget=forms.TextInput(
-                                            attrs={'placeholder': 'Tipo de Compañía'}), label="Tipo de Compañía")
-        business_id = forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
-                                         required=True,
-                                         widget=forms.NumberInput(attrs={'placeholder': 'Id de Compañía'}),
-                                         label="Id de Compañía")
+    email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control input-lg'}), label="Email")
+    address = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                              widget=forms.TextInput(
+                                  attrs={'placeholder': 'Dirección', 'class': 'form-control input-lg'}), label="Dirección")
+    business_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
+                                    required=True,
+                                    widget=forms.TextInput(
+                                        attrs={'placeholder': 'Nombre de Compañía', 'class': 'form-control input-lg'}), label="Nombre de Compañía")
+    business_type = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                    widget=forms.TextInput(
+                                        attrs={'placeholder': 'Tipo de Compañía', 'class': 'form-control input-lg'}), label="Tipo de Compañía")
+    business_id = forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
+                                     required=True,
+                                     widget=forms.NumberInput(attrs={'placeholder': 'Id de Compañía', 'class': 'form-control input-lg'}),
+                                     label="Id de Compañía")
 
     def save(self, commit=True):
         company = super().save(commit=False)
@@ -98,15 +98,15 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
 
 class SignUpPersonCustomerForm(forms.ModelForm):
     user_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, label='Usuario',
-                                widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
+                                widget=forms.TextInput(attrs={'placeholder': 'Nombre', 'class': 'form-control input-lg'}))
     password = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH, required=True,
                                label='Contraseña',
-                               widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class': 'form-control input-lg'}))
     password_confirm = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH,
                                        required=True,
                                        label='Confirmar Contraseña',
                                        widget=forms.PasswordInput(
-                                           attrs={'placeholder': 'Confirmar Contraseña'}))
+                                           attrs={'placeholder': 'Confirmar Contraseña', 'class': 'form-control input-lg'}))
 
     class Meta:
         model = Person
@@ -115,18 +115,18 @@ class SignUpPersonCustomerForm(forms.ModelForm):
         error_messages = person_error_messages
 
     email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                             widget=forms.TextInput(attrs={'placeholder': 'Email'}), label='Email')
+                             widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control input-lg'}), label='Email')
     address = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Dirección'}), label='Dirección')
+        attrs={'placeholder': 'Dirección', 'class': 'form-control input-lg'}), label='Dirección')
     person_id = forms.IntegerField(min_value=PERSON_ID_MIN_VALUE, max_value=PERSON_ID_MAX_VALUE, required=True,
                                    widget=forms.NumberInput(
-                                       attrs={'placeholder': 'Id de Persona'}), label='Id de Persona')
+                                       attrs={'placeholder': 'Id de Persona', 'class': 'form-control input-lg'}), label='Id de Persona')
     first_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Nombre'}), label='Nombre')
+        attrs={'placeholder': 'Nombre', 'class': 'form-control input-lg'}), label='Nombre')
     last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Apellido'}), label='Apellido')
+        attrs={'placeholder': 'Apellido', 'class': 'form-control input-lg'}), label='Apellido')
     birth_date = forms.DateField(required=True,
-                                 widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento'}), label='Fecha de Nacimiento')
+                                 widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento', 'class': 'form-control input-lg'}), label='Fecha de Nacimiento')
 
     def save(self, commit=True):
         person = super().save(commit=False)
