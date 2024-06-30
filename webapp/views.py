@@ -1,11 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from webapp.common.constants import *
-from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, CreateRentForm
+from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, \
+    CreateRentForm
 from webapp.models import VehicleType, Vehicle, Rent
-from webapp.common.utils.views_utils import get_menu, redirect_to_login, redirect_to_home
+from webapp.common.utils.views_utils import redirect_to_login, redirect_to_home, find_user_by_email, \
+    reset_password_request_message, sign_up_person_message, sign_up_company_message
 from webapp.common.api.email_api_client import notify
+import logging
+
+logger = logging.getLogger('webapp')
+
 
 def index(request):
     return redirect_to_login()
@@ -81,26 +88,16 @@ def list_vehicle_type(request):
     return render(request, 'vehicle_type/vehicle_type_list.html', context)
 
 
-def select_customer_type(request):
-    if request.method == 'POST':
-        customer_type = request.POST.get('customer_type')
-        if customer_type == 'person':
-            return redirect('signup_person')
-        elif customer_type == 'company':
-            return redirect('signup_company')
-    return render(request, 'customer/signup/customer_type_selection.html')
-
-
 def signup_person(request):
     context = {}
-    if request.method == 'POST':
+    if request.method == POST:
         form = SignUpPersonCustomerForm(request.POST)
         if form.is_valid():
             person = form.save()
             user = authenticate(username=person.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                notify(form)
+                notify(sign_up_person_message(person, user))
                 return redirect_to_home()
     else:
         form = SignUpPersonCustomerForm()
@@ -110,14 +107,14 @@ def signup_person(request):
 
 def signup_company(request):
     context = {}
-    if request.method == 'POST':
+    if request.method == POST:
         form = SignUpCompanyCustomerForm(request.POST)
         if form.is_valid():
             company = form.save()
             user = authenticate(username=company.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                notify(form)
+                notify(sign_up_company_message(company, user))
                 return redirect_to_home()
     else:
         form = SignUpCompanyCustomerForm()
@@ -185,3 +182,22 @@ def list_rent(request):
     context['rents'] = rents
     return render(request, 'rent/rent_list.html', context)
 
+
+def request_for_password_reset(request):
+    logger.info("Reset password requested!")
+    if request.method == POST:
+        email = request.POST['email']
+        try:
+            user = find_user_by_email(email)
+        except User.DoesNotExist:
+            user = None
+            logger.warning(f"User does not exist for email {email}!")
+        if user is not None:
+            notify(reset_password_request_message(request, user, email))
+            return redirect('login')
+    return render(request, 'account/reset-password.html')
+
+
+def reset_password(request, uid, token):
+    logger.info("Reset password executed!")
+    return render(request, 'account/reset-password-confirmation.html')

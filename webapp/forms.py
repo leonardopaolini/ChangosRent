@@ -2,10 +2,11 @@ from django import forms
 from django.contrib.auth.models import User
 
 from webapp.common.validation.form_error_messages import *
-from webapp.models import Rent, VehicleType, Vehicle, Person, Company, Customer,VehicleStatus
-from django.utils  import timezone
+from webapp.models import Rent, VehicleType, Vehicle, Person, Company, VehicleStatus
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 import datetime
+
 
 class MyDateInput(forms.widgets.DateInput):
     input_type = 'date'
