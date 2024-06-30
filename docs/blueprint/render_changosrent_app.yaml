@@ -1,0 +1,34 @@
+# Exported from Render on 2024-06-30T02:44:06Z
+services:
+- type: web
+  name: ChangosRent
+  runtime: python
+  repo: https://github.com/leonardopaolini/ChangosRent
+  plan: free
+  envVars:
+  - key: DEFAULT_FROM_EMAIL
+    sync: false
+  - key: DEFAULT_CC_NAME
+    sync: false
+  - key: DEFAULT_CC_EMAIL
+    sync: false
+  - key: PORT
+    sync: false
+  - key: DEBUG_APP
+    sync: false
+  - key: DATABASE_USER
+    sync: false
+  - key: DATABASE_PORT
+    sync: false
+  - key: DATABASE_PASSWORD
+    sync: false
+  - key: DATABASE_NAME
+    sync: false
+  - key: DATABASE_HOST
+    sync: false
+  - key: BREVO_SMTP_API_KEY
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt && python manage.py collectstatic
+  startCommand: gunicorn ChangosRent.wsgi:application webapp
+version: "1"
