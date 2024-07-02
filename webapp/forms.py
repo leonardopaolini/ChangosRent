@@ -6,6 +6,7 @@ from webapp.models import Rent, VehicleType, Vehicle, Person, Company, VehicleSt
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 import datetime
+from django.contrib.auth.password_validation import validate_password
 
 
 class MyDateInput(forms.widgets.DateInput):
@@ -257,3 +258,36 @@ class CreateRentForm(forms.ModelForm):
         vehicles= self.cleaned_data.get('vehicles')
         print("vehicles:", vehicles)
         super().save_m2m()  # Llama al método original para guardar las relaciones ManyToMany        
+
+
+class ResetPasswordForm(forms.Form):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+
+    password = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH, required=True,
+                               label='Contraseña',
+                               widget=forms.PasswordInput(
+                                   attrs={'placeholder': 'Contraseña', 'class': 'form-control input-lg'}))
+    password_confirm = forms.CharField(max_length=PASSWORD_MAX_LENGTH, min_length=PASSWORD_MIN_LENGTH,
+                                       required=True,
+                                       label='Confirmar Contraseña',
+                                       widget=forms.PasswordInput(
+                                           attrs={'placeholder': 'Confirmar Contraseña',
+                                                  'class': 'form-control input-lg'}))
+
+    def clean_password(self):
+        validate_password(self.cleaned_data["password"])
+        return self.cleaned_data["password"]
+
+    def clean_password_confirm(self):
+        validate_password(self.cleaned_data["password_confirm"])
+        return self.cleaned_data["password_confirm"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirmation = cleaned_data.get('password_confirm')
+        if password and confirmation and password != confirmation:
+            raise forms.ValidationError("La contraseña y la confirmación no son iguales.")
+        return self.cleaned_data

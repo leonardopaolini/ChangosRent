@@ -16,6 +16,7 @@ urlpatterns = [
     path('vehicle/list', views.list_vehicle, name='list_vehicle'),
     path('rent/create', views.create_rent, name='create_rent'),
     path('rent/list', views.list_rent, name='list_rent'),
+    path('rent/customer/list', views.list_rent_by_customer, name='list_rent_by_customer'),
     path('account/password/reset/request', views.request_for_password_reset, name='request_password_reset'),
     path('account/password/reset/request/<str:uid>/<str:token>', views.reset_password, name='reset_password'),
 ]

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from enum import Enum
@@ -22,6 +22,7 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     created = models.DateTimeField(default=timezone.now)
+    rents = GenericRelation('Rent', content_type_field='customer_type', object_id_field='customer_id')
 
     class Meta:
         abstract = True

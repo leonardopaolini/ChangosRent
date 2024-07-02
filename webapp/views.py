@@ -1,15 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView
+
 from webapp.common.constants import *
 from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, \
-    CreateRentForm
+    CreateRentForm, ResetPasswordForm
 from webapp.models import VehicleType, Vehicle, Rent
-from webapp.common.utils.views_utils import redirect_to_login, redirect_to_home, find_user_by_email, \
-    reset_password_request_message, sign_up_person_message, sign_up_company_message
+from webapp.common.utils.views_utils import *
 from webapp.common.api.email_api_client import notify
 import logging
+from django.contrib import messages
 
 logger = logging.getLogger('webapp')
 
@@ -183,6 +186,15 @@ def list_rent(request):
     return render(request, 'rent/rent_list.html', context)
 
 
+@login_required(login_url='login')
+def list_rent_by_customer(request):
+    context = {}
+    customer = find_customer_by_user(request.user)
+    rents = customer.rents.all().order_by('invoice_date')
+    context['rents'] = rents
+    return render(request, 'rent/rent_list.html', context)
+
+
 def request_for_password_reset(request):
     logger.info("Reset password requested!")
     if request.method == POST:
@@ -193,11 +205,37 @@ def request_for_password_reset(request):
             user = None
             logger.warning(f"User does not exist for email {email}!")
         if user is not None:
+            messages.success(request, "El reinicio de contraseña se ha generado con éxito. Revisá tu email")
             notify(reset_password_request_message(request, user, email))
-            return redirect('login')
+        else:
+            messages.error(request, "El reinicio de contraseña no pudo realizarse. Verificá que tu email se correcto")
+        return render(request, 'account/reset-password-request-confirmation.html')
     return render(request, 'account/reset-password.html')
 
 
-def reset_password(request, uid, token):
-    logger.info("Reset password executed!")
-    return render(request, 'account/reset-password-confirmation.html')
+def reset_password(request, uid=None, token=None):
+    logger.info('Executing password reset!')
+    context = {}
+    assert uid is not None and token is not None
+    try:
+        user = decode_password_reset_request_user(uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == POST:
+            form = ResetPasswordForm(user, data=request.POST)
+            if form.is_valid():
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+                messages.success(request, 'La constraseña se modificó con éxito!')
+                return render(request, 'account/reset-password-success.html')
+        else:
+            form = ResetPasswordForm(user)
+        context['form'] = form
+    else:
+        messages.error(request, 'El enlace no es válido!')
+    return render(request, 'account/reset-password-confirmation.html', context)
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/profile.html'
