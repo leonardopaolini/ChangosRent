@@ -114,7 +114,7 @@ class SignUpPersonCustomerForm(forms.ModelForm):
         attrs={'placeholder': 'Dirección', 'class': 'form-control input-lg'}), label='Dirección')
     person_id = forms.IntegerField(min_value=PERSON_ID_MIN_VALUE, max_value=PERSON_ID_MAX_VALUE, required=True,
                                    widget=forms.NumberInput(
-                                       attrs={'placeholder': 'Id de Persona', 'class': 'form-control input-lg'}), label='Id de Persona')
+                                       attrs={'placeholder': 'DNI', 'class': 'form-control input-lg'}), label='Id de Persona')
     first_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
         attrs={'placeholder': 'Nombre', 'class': 'form-control input-lg'}), label='Nombre')
     last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
