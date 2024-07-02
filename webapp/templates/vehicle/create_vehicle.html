@@ -32,8 +32,11 @@
             {{ form.buy_date }}
             <small class="text-danger">{{ form.buy_date.errors }}</small>
         </div>
-
-
+        <div class="form-group dropdown-menu-xl-right">
+            {{ form.vehicle_type.label_tag }}
+            {{ form.vehicle_type }}
+            <small class="text-danger">{{ form.vehicle_type.errors }}</small>
+        </div>
         <button class="btn btn-primary btn-pill mr-2" type="submit">Guardar</button>
 
     </form>

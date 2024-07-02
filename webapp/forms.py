@@ -19,6 +19,7 @@ class MyDateInput(forms.widgets.DateInput):
             default_attrs.update(attrs)
         super().__init__(attrs=default_attrs, format=format)    
 
+
 class MyInput(forms.widgets.DateInput):
     input_type = 'date'
     def __init__(self, attrs=None, format=None):
@@ -150,28 +151,32 @@ class CreateVehicleForm(forms.ModelForm):
         model = Vehicle
         fields = ['brand', 'model', 'year', 'description', 'buy_date', 'vehicle_type']
         error_messages = vehicle_error_messages
+        widgets = {
+            'vehicle_type': forms.Select(
+                attrs={'placeholder': 'Tipo de Vehículo', 'class': 'form-control border-danger'})
+        }
+        labels = {
+            'vehicle_type': 'Tipo de Vehículo'
+        }
 
     brand = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                            widget=forms.TextInput(attrs={'placeholder': 'Marca','class':'form-control border-danger'}), label='Marca')
+                            widget=forms.TextInput(
+                                attrs={'placeholder': 'Marca', 'class': 'form-control border-danger'}), label='Marca')
     model = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
-                            widget=forms.TextInput(attrs={'placeholder': 'Modelo','class':'form-control border-danger'}), label='Modelo')
+                            widget=forms.TextInput(
+                                attrs={'placeholder': 'Modelo', 'class': 'form-control border-danger'}), label='Modelo')
     year = forms.IntegerField(min_value=2000, max_value=2100, required=True,
-                              widget=forms.NumberInput(attrs={'placeholder': 'Año','class':'form-control border-danger'}), label='Año')
+                              widget=forms.NumberInput(
+                                  attrs={'placeholder': 'Año', 'class': 'form-control border-danger'}), label='Año')
     description = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=False,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Descripción','class':'form-control border-danger'}),
+                                  widget=forms.TextInput(
+                                      attrs={'placeholder': 'Descripción', 'class': 'form-control border-danger'}),
                                   label='Descripción')
-    # buy_date = forms.DateField(
-    #     input_formats=['%m/%d/%Y', '%d/%m/%Y'],
-    #     widget=forms.MiDateInput(format='%m/%d/%Y',
-    #                            attrs={'class': 'form-control mydatepicker form-control border-danger', 'data-mask': '00/00/0000'}), required=True,
-    #     label='Fecha de Compra')
-#    'vehicle_type': forms.Select(attrs={'class': 'custom-select'}),
     buy_date = forms.DateField(
-#        input_formats=['%m/%d/%Y', '%d/%m/%Y'],
         widget=MyDateInput(),
         required=True,
         label='Fecha de Compra'
-        )
+    )
 
 
 class CreateRentForm(forms.ModelForm):
@@ -186,25 +191,19 @@ class CreateRentForm(forms.ModelForm):
         error_messages = rent_error_messages 
         labels = {
             'start_date': 'Fecha desde',
-            'end_date' : 'Fecha hasta',
-            'vehicles' : 'Vehiculos',
-            'payment_method' : 'Forma de pago',
- #           'total': 'Total',
+            'end_date': 'Fecha hasta',
+            'vehicles': 'Vehiculos',
+            'payment_method': 'Forma de pago'
         }
 
 
     payment_method= forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Forma de pago','class':'form-control border-danger'}),label='Forma de pago')
     start_date = forms.DateField(
-        #input_formats=['%d/%m/%Y'],
-        #input_formats=['%m/%d/%Y', '%d/%m/%Y'],
-        # widget=forms.DateInput(format='%m/%d/%Y',
-        #      attrs={'class': 'form-control form-control border-danger', 'data-mask': '00/00/0000'}), 
         widget=MyDateInput(),
         required=True,
         label='Fecha desde')
     end_date = forms.DateField(
-        #input_formats=['%m/%d/%Y', '%d/%m/%Y'],
         widget=MyDateInput(),
         required=True,
         label='Fecha hasta')
@@ -213,12 +212,7 @@ class CreateRentForm(forms.ModelForm):
         required=True,
         widget=forms.SelectMultiple(attrs={'placeholder': 'Vehiculos','class':'form-control border-danger'}),
         label='Vehiculos'
-
     )
-#    vehicles= forms.CharField(required=True,
-#        widget=forms.TextInput(attrs={'placeholder': 'Vehiculos','class':'form-control border-danger'}),label='Vehiculos')
-
-
 
     def clean(self):
         cleaned_data = super().clean()

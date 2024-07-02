@@ -1,44 +1,46 @@
 {% extends "template.html" %}
 {% block titulo %}
     <p>Edición de Vehiculo</p>
-{% endblock%}
+{% endblock %}
 {% block main %}
     <h1>Editar Vehiculo: {{ vehicle.model }}</h1>
     <form method="post" novalidate>
         {% csrf_token %}
 
-    <div class="form-group">
-        {{ form.brand.label_tag }}
-        {{ form.brand }}
-        <small class="text-danger">{{ form.brand.errors }}</small>
-    </div>
-    <div class="form-group">
-        {{ form.model.label_tag }}
-        {{ form.model }}
-        <small class="text-danger">{{ form.model.errors }}</small>
-    </div>
-    <div class="form-group">
-        {{ form.year.label_tag }}
-        {{ form.year }}
-        <small class="text-danger">{{ form.year.errors }}</small>
-    </div>
-    <div class="form-group">
-        {{ form.description.label_tag }}
-        {{ form.description }}
-        <small class="text-danger">{{ form.description.errors }}</small>
-    </div>
-    <div class="form-group">
-        {{ form.buy_date.label_tag }}
-        {{ form.buy_date }}
-        <small class="text-danger">{{ form.buy_date.errors }}</small>
-    </div>
-
-
-    <button class="btn btn-primary btn-pill mr-2" type="submit">Actualizar</button>
-
+        <div class="form-group">
+            {{ form.brand.label_tag }}
+            {{ form.brand }}
+            <small class="text-danger">{{ form.brand.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.model.label_tag }}
+            {{ form.model }}
+            <small class="text-danger">{{ form.model.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.year.label_tag }}
+            {{ form.year }}
+            <small class="text-danger">{{ form.year.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            <small class="text-danger">{{ form.description.errors }}</small>
+        </div>
+        <div class="form-group">
+            {{ form.buy_date.label_tag }}
+            {{ form.buy_date }}
+            <small class="text-danger">{{ form.buy_date.errors }}</small>
+        </div>
+        <div class="form-group dropdown-menu-xl-right">
+            {{ form.vehicle_type.label_tag }}
+            {{ form.vehicle_type }}
+            <small class="text-danger">{{ form.vehicle_type.errors }}</small>
+        </div>
+        <button class="btn btn-primary btn-pill mr-2" type="submit">Actualizar</button>
     </form>
 
-<!-- 
+    <!--
     <h1>Editar Vehiculo: {{ vehicle.model }}</h1>
     <form method="post" novalidate>
         {% csrf_token %}
