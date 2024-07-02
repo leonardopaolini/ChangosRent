@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from webapp.common.constants import *
 from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, \
-    CreateRentForm, ResetPasswordForm
+    CreateRentForm, ResetPasswordForm,CreateCompanyCustomerForm,CreatePersonCustomerForm
 from webapp.models import VehicleType, Vehicle, Rent
 from webapp.common.utils.views_utils import *
 from webapp.common.api.email_api_client import notify
@@ -239,3 +239,44 @@ def reset_password(request, uid=None, token=None):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
+
+
+
+@login_required(login_url='login')
+def list_customer(request):
+    context = {}
+    persons = Person.objects.all()
+    context['persons'] = persons
+    companys = Company.objects.all()
+    context['companys'] = companys
+    return render(request, 'customer/customer_list.html', context)
+
+@login_required(login_url='login')
+def edit_person(request, person_id):
+    context = {}
+    person = get_object_or_404(Person, pk=person_id)
+    if request.method == POST:
+        form = CreatePersonCustomerForm(request.POST, instance=person)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreatePersonCustomerForm(instance=person)
+    context['form'] = form
+    context['person'] = person
+    return render(request, 'customer/signup/person/edit_person.html', context)
+
+@login_required(login_url='login')
+def edit_company(request, company_id):
+    context = {}
+    company = get_object_or_404(Company, pk=company_id)
+    if request.method == POST:
+        form = CreateCompanyCustomerForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreateCompanyCustomerForm(instance=company)
+    context['form'] = form
+    context['company'] = company
+    return render(request, 'customer/signup/company/edit_company.html', context)

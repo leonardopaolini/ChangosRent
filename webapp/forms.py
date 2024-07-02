@@ -10,21 +10,12 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class MyDateInput(forms.widgets.DateInput):
-    input_type = 'date'
-    #format = '%d/%m/%Y'
+    input_type = 'DateInput'
+    format = '%d/%m/%Y'
     def __init__(self, attrs=None, format=None):
         # Agrega los atributos que desees aquí
-        default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha'}
-        if attrs:
-            default_attrs.update(attrs)
-        super().__init__(attrs=default_attrs, format=format)    
-
-
-class MyInput(forms.widgets.DateInput):
-    input_type = 'date'
-    def __init__(self, attrs=None, format=None):
-        # Agrega los atributos que desees aquí
-        default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha','data-mask': '00/00/0000'}
+        default_attrs = {'class': 'form-control border-danger', 'placeholder': 'Selecciona una fecha'}
+        # default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha'}
         if attrs:
             default_attrs.update(attrs)
         super().__init__(attrs=default_attrs, format=format)    
@@ -285,3 +276,46 @@ class ResetPasswordForm(forms.Form):
         if password and confirmation and password != confirmation:
             raise forms.ValidationError("La contraseña y la confirmación no son iguales.")
         return self.cleaned_data
+
+
+class CreateCompanyCustomerForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ['business_name', 'business_type',
+                  'business_id']
+        error_messages = company_error_messages
+
+    business_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH,
+                                    required=True,
+                                    widget=forms.TextInput(
+                                        attrs={'placeholder': 'Nombre de Empresa', 'class': 'form-control input-lg'}), label="Nombre de Empresa")
+    business_type = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
+                                    widget=forms.TextInput(
+                                        attrs={'placeholder': 'Tipo de Empresa', 'class': 'form-control input-lg'}), label="Tipo de Empresa")
+    business_id = forms.IntegerField(min_value=COMPANY_ID_MIN_VALUE, max_value=COMPANY_ID_MAX_VALUE,
+                                     required=True,
+                                     widget=forms.NumberInput(attrs={'placeholder': 'Id de Empresa', 'class': 'form-control input-lg'}),
+                                     label="CUIT")
+
+
+
+class CreatePersonCustomerForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['person_id', 'first_name', 'last_name',
+                  'birth_date']
+        error_messages = person_error_messages
+
+    person_id = forms.IntegerField(min_value=PERSON_ID_MIN_VALUE, max_value=PERSON_ID_MAX_VALUE, required=True,
+                                   widget=forms.NumberInput(
+                                       attrs={'placeholder': 'Id de Persona', 'class': 'form-control input-lg'}),
+                                    label='DNI')
+    first_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Nombre', 'class': 'form-control input-lg'}), label='Nombre')
+    last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Apellido', 'class': 'form-control input-lg'}), label='Apellido')
+    birth_date = forms.DateField(required=True,
+                                widget=MyDateInput(),
+
+                                label='Fecha de Nacimiento')
+

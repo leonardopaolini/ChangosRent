@@ -1,0 +1,33 @@
+{% extends "template.html" %}
+{% block titulo %}
+    <p>Edición de compañia</p>
+{% endblock%}
+{% block main %}
+    <h1>Editar compañia:</h1>
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+    <div class="form-group">
+        {{ form.business_name.label_tag }}
+        {{ form.business_name }}
+        <small class="text-danger">{{ form.business_name.errors }}</small>
+    </div>
+    <div class="form-group">
+        {{ form.business_type.label_tag }}
+        {{ form.business_type }}
+        <small class="text-danger">{{ form.business_type.errors }}</small>
+    </div>
+    <div class="form-group">
+        {{ form.business_id.label_tag }}
+        {{ form.business_id }}
+        <small class="text-danger">{{ form.business_id.errors }}</small>
+    </div>
+
+    <button class="btn btn-primary btn-pill mr-2" type="submit">Actualizar</button>
+
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+{% endblock %}

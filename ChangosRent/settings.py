@@ -122,6 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-ar'
 
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',  # Your preferred format
+]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
