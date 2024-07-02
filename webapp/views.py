@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 
@@ -237,9 +238,8 @@ def reset_password(request, uid=None, token=None):
     return render(request, 'account/reset-password-confirmation.html', context)
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'account/profile.html'
-
+def account_profile(request):
+    raise Http404('Perfil de Usuarios no implementado aún')
 
 
 @login_required(login_url='login')

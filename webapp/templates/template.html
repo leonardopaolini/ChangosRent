@@ -188,7 +188,7 @@
                 <div class="sidebar-footer-content">
                     <ul class="d-flex">
                         <li>
-                            <a href="user-account-settings.html" data-toggle="tooltip" title="Mi Perfil">
+                            <a href="{% url 'account_profile' %}" data-toggle="tooltip" title="Mi Perfil">
                                 <i class="mdi mdi-settings"></i>
                             </a>
                         </li>
@@ -211,7 +211,7 @@
                 <button id="sidebar-toggler" class="sidebar-toggle">
                     <span class="sr-only">Toggle navigation</span>
                 </button>
-                <span class="page-title">Tu Menú</span>
+                <span class="page-title">Alquiler de Vehículos</span>
                 <ul class="nav navbar-nav">
 
                     <!-- User Account -->
@@ -227,7 +227,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
-                                <a class="dropdown-link-item" href="user-profile.html">
+                                <a class="dropdown-link-item" href="{% url  'account_profile' %}">
                                     <i class="mdi mdi-account-outline"></i>
                                     <span class="nav-text">Mi Perfil</span>
                                 </a>

@@ -22,4 +22,6 @@ urlpatterns = [
     path('rent/customer/list', views.list_rent_by_customer, name='list_rent_by_customer'),
     path('account/password/reset/request', views.request_for_password_reset, name='request_password_reset'),
     path('account/password/reset/request/<str:uid>/<str:token>', views.reset_password, name='reset_password'),
+    path('account/profile', views.account_profile, name='account_profile'),
+
 ]
