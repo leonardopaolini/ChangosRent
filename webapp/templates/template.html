@@ -67,13 +67,8 @@
                             data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 <li>
-                                    <a class="sidenav-item-link" href="{% url 'create_rent' %}">
-                                        <span class="nav-text">Nuevo Alquiler</span>
-                                    </a>
-                                </li>
-                                <li>
                                     <a class="sidenav-item-link" href="{% url 'list_rent' %}">
-                                        <span class="nav-text">Gestionar Alquileres</span>
+                                        <span class="nav-text">Lista Alquileres</span>
                                     </a>
                                 </li>
                             </div>
@@ -94,12 +89,7 @@
                             data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 <li>
-                                    <a class="sidenav-item-link" href="alert.html">
-                                        <span class="nav-text">Nueva Persona</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidenav-item-link" href="badge.html">
+                                    <a class="sidenav-item-link" href="{% url 'list_customer' %}">
                                         <span class="nav-text">Lista Personas</span>
                                     </a>
                                 </li>
@@ -117,12 +107,8 @@
                             data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 <li>
-                                    <a class="sidenav-item-link" href="alert.html">
-                                        <span class="nav-text">Nueva Empresa</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidenav-item-link" href="badge.html">
+                                    <a class="sidenav-item-link" href="{% url 'list_customer' %}">
+
                                         <span class="nav-text">Gestionar Empresas</span>
                                     </a>
                                 </li>
