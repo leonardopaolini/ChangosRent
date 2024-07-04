@@ -12,10 +12,12 @@ from django.contrib.auth.password_validation import validate_password
 class MyDateInput(forms.widgets.DateInput):
     input_type = 'DateInput'
     format = '%d/%m/%Y'
-    def __init__(self, attrs=None, format=None):
+    def __init__(self, attrs=None, format=None, placeholder=None):
         # Agrega los atributos que desees aquí
-        default_attrs = {'class': 'form-control border-danger', 'placeholder': 'Selecciona una fecha'}
+        default_attrs = {'class': 'form-control border-danger','data-mask': '00/00/0000'}
         # default_attrs = {'class': 'form-control mydatepicker form-control border-danger', 'placeholder': 'Selecciona una fecha'}
+        if placeholder:
+            default_attrs['placeholder'] = placeholder
         if attrs:
             default_attrs.update(attrs)
         super().__init__(attrs=default_attrs, format=format)    
@@ -120,7 +122,7 @@ class SignUpPersonCustomerForm(forms.ModelForm):
     last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
         attrs={'placeholder': 'Apellido', 'class': 'form-control input-lg'}), label='Apellido')
     birth_date = forms.DateField(required=True,
-                                 widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento', 'class': 'form-control input-lg'}), label='Fecha de Nacimiento')
+                                 widget=forms.DateInput(attrs={'placeholder': 'Fecha de Nacimiento (dd/mm/aaaa)', 'class': 'form-control input-lg','data-mask': '00/00/0000'}), label='Fecha de Nacimiento')
 
     def save(self, commit=True):
         person = super().save(commit=False)
@@ -164,7 +166,7 @@ class CreateVehicleForm(forms.ModelForm):
                                       attrs={'placeholder': 'Descripción', 'class': 'form-control border-danger'}),
                                   label='Descripción')
     buy_date = forms.DateField(
-        widget=MyDateInput(),
+        widget=MyDateInput(placeholder= 'Fecha de compra (dd/mm/aaaa)'),
         required=True,
         label='Fecha de Compra'
     )
@@ -191,11 +193,11 @@ class CreateRentForm(forms.ModelForm):
     payment_method= forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Forma de pago','class':'form-control border-danger'}),label='Forma de pago')
     start_date = forms.DateField(
-        widget=MyDateInput(),
+        widget=MyDateInput(placeholder= 'Fecha desde (dd/mm/aaaa)'),
         required=True,
         label='Fecha desde')
     end_date = forms.DateField(
-        widget=MyDateInput(),
+        widget=MyDateInput(placeholder= 'Fecha hasta (dd/mm/aaaa)'),
         required=True,
         label='Fecha hasta')
     vehicles= forms.MultipleChoiceField(
@@ -315,7 +317,7 @@ class CreatePersonCustomerForm(forms.ModelForm):
     last_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, widget=forms.TextInput(
         attrs={'placeholder': 'Apellido', 'class': 'form-control input-lg'}), label='Apellido')
     birth_date = forms.DateField(required=True,
-                                widget=MyDateInput(),
+                                widget=MyDateInput(placeholder= 'Fecha de nacimiento (dd/mm/aaaa)'),
 
                                 label='Fecha de Nacimiento')
 

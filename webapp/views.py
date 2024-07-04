@@ -12,6 +12,8 @@ from webapp.common.utils.views_utils import *
 from webapp.common.api.email_api_client import notify
 import logging
 from django.contrib import messages
+from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 logger = logging.getLogger('webapp')
 
@@ -84,13 +86,18 @@ def edit_vehicle_type(request, vehicle_type_id):
     return render(request, 'vehicle_type/edit_vehicle_type.html', context)
 
 
-@permission_required('webapp.list_vehicle_type', raise_exception=True, login_url=None)
-@login_required(login_url='login')
-def list_vehicle_type(request):
-    context = {}
-    vehicle_types = VehicleType.objects.all().order_by('name')
-    context['vehicle_types'] = vehicle_types
-    return render(request, 'vehicle_type/vehicle_type_list.html', context)
+#@permission_required('webapp.list_vehicle_type', raise_exception=True, login_url=None)
+# @login_required(login_url='login')
+# def list_vehicle_type(request):
+#     context = {}
+#     vehicle_types = VehicleType.objects.all().order_by('name')
+#     context['vehicle_types'] = vehicle_types
+#     return render(request, 'vehicle_type/vehicle_type_list.html', context)
+class list_vehicle_type(LoginRequiredMixin, ListView):
+    model=VehicleType
+    context_object_name='vehicle_types'
+    template_name='vehicle_type/vehicle_type_list.html'
+    ordering = ['name']
 
 
 def signup_person(request):
