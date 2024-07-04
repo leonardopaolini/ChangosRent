@@ -220,7 +220,7 @@ class CreateRentForm(forms.ModelForm):
         widget=MyDateInput(placeholder= 'Fecha hasta (dd/mm/aaaa)'),
         required=True,
         label='Fecha hasta')
-    vehicles= forms.MultipleChoiceField(
+    vehicles = forms.MultipleChoiceField(
         choices=[(item.pk, item) for item in Vehicle.objects.filter(status = VehicleStatus.READY_FOR_USE.value).order_by('model')],
         required=True,
         widget=forms.SelectMultiple(attrs={'placeholder': 'Vehiculos','class':'form-control border-danger'}),
