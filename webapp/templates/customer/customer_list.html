@@ -9,7 +9,6 @@
 
 {% block main %}
  <h2>Listado de Clientes</h2>
-     <a href="{% url 'home' %}">Volver</a>
      <table class="table">
         <thead>
           <tr>
@@ -27,7 +26,7 @@
             <td class="badge badge-pill badge-primary">Persona</td>
             <td>{{ person.last_name }} {{ person.first_name }}</td> 
             <td>{{ person.person_id }}</td>
-            <td><a class="button" href="{% url 'edit_person' person.id %}">Editar</a></td>            
+            <td><a class="button" href="{% url 'edit_person' person.id %}">Editar</a></td>
           </tr>
         {% endfor %}
         {% for company in companys %}
@@ -36,7 +35,7 @@
             <td class="badge badge-pill badge-secondary">Compañia</td>
             <td>{{ company.business_name }}</td> 
             <td>{{ company.business_id }}</td>
-            <td><a class="button" href="{% url 'edit_company' company.id %}">Editar</a></td>            
+            <td><a class="button" href="{% url 'edit_company' company.id %}">Editar</a></td>
           </tr>
         {% endfor %}
         </tbody>

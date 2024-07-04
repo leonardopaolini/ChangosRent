@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from webapp.models import Person, Company
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
@@ -64,3 +64,8 @@ def sign_up_company_message(company, user):
                         .set_email(company.email)
                         .set_business_name(company.business_name)
                         .build())
+
+
+def include_in_customer_group(user):
+    customer_group = Group.objects.get(name='Customers')
+    user.groups.add(customer_group)

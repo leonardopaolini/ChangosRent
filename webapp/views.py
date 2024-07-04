@@ -1,10 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import Http404
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView
+from django.shortcuts import render, get_object_or_404
 
 from webapp.common.constants import *
 from webapp.forms import CreateVehicleTypeForm, SignUpPersonCustomerForm, SignUpCompanyCustomerForm, CreateVehicleForm, \
@@ -54,6 +52,7 @@ def logout_view(request):
     return redirect_to_login()
 
 
+@permission_required('webapp.create_vehicle_type', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def create_vehicle_type(request):
     context = {}
@@ -68,6 +67,7 @@ def create_vehicle_type(request):
     return render(request, 'vehicle_type/create_vehicle_type.html', context)
 
 
+@permission_required('webapp.change_vehicle_type', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def edit_vehicle_type(request, vehicle_type_id):
     context = {}
@@ -84,6 +84,7 @@ def edit_vehicle_type(request, vehicle_type_id):
     return render(request, 'vehicle_type/edit_vehicle_type.html', context)
 
 
+@permission_required('webapp.list_vehicle_type', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def list_vehicle_type(request):
     context = {}
@@ -100,6 +101,7 @@ def signup_person(request):
             person = form.save()
             user = authenticate(username=person.user.username, password=form.cleaned_data['password'])
             if user is not None:
+                include_in_customer_group(user)
                 login(request, user)
                 notify(sign_up_person_message(person, user))
                 return redirect_to_home()
@@ -118,6 +120,7 @@ def signup_company(request):
             user = authenticate(username=company.user.username, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
+                include_in_customer_group(user)
                 notify(sign_up_company_message(company, user))
                 return redirect_to_home()
     else:
@@ -126,6 +129,7 @@ def signup_company(request):
     return render(request, 'customer/signup/company/signup_customer.html', context)
 
 
+@permission_required('webapp.create_vehicle', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def create_vehicle(request):
     context = {}
@@ -140,6 +144,7 @@ def create_vehicle(request):
     return render(request, 'vehicle/create_vehicle.html', context)
 
 
+@permission_required('webapp.change_vehicle', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def edit_vehicle(request, vehicle_id):
     context = {}
@@ -156,6 +161,7 @@ def edit_vehicle(request, vehicle_id):
     return render(request, 'vehicle/edit_vehicle.html', context)
 
 
+@permission_required('webapp.list_vehicle', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def list_vehicle(request):
     context = {}
@@ -164,6 +170,7 @@ def list_vehicle(request):
     return render(request, 'vehicle/vehicle_list.html', context)
 
 
+@permission_required('webapp.create_rent', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def create_rent(request):
     context = {}
@@ -171,7 +178,6 @@ def create_rent(request):
         form = CreateRentForm(request.user,data=request.POST)
         if form.is_valid():
             form.save()
-            #form.save_m2m()
             return redirect('home')
     else:
         form = CreateRentForm(request.user)
@@ -179,6 +185,7 @@ def create_rent(request):
     return render(request, 'rent/create_rent.html', context)
 
 
+@permission_required('webapp.list_rent', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def list_rent(request):
     context = {}
@@ -187,6 +194,7 @@ def list_rent(request):
     return render(request, 'rent/rent_list.html', context)
 
 
+@permission_required('webapp.list_rent', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def list_rent_by_customer(request):
     context = {}
@@ -242,6 +250,8 @@ def account_profile(request):
     raise Http404('Perfil de Usuarios no implementado aún')
 
 
+@permission_required('webapp.list_person', raise_exception=True, login_url=None)
+@permission_required('webapp.list_company', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def list_customer(request):
     context = {}
@@ -251,6 +261,8 @@ def list_customer(request):
     context['companys'] = companys
     return render(request, 'customer/customer_list.html', context)
 
+
+@permission_required('webapp.change_person', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def edit_person(request, person_id):
     context = {}
@@ -266,6 +278,8 @@ def edit_person(request, person_id):
     context['person'] = person
     return render(request, 'customer/signup/person/edit_person.html', context)
 
+
+@permission_required('webapp.change_company', raise_exception=True, login_url=None)
 @login_required(login_url='login')
 def edit_company(request, company_id):
     context = {}
