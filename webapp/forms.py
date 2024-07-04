@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib.auth.models import User
-
+from webapp.common.utils.views_utils import validate_username, validate_email
 from webapp.common.validation.form_error_messages import *
 from webapp.models import Rent, VehicleType, Vehicle, Person, Company, VehicleStatus
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-import datetime
+from datetime import date
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -91,6 +91,16 @@ class SignUpCompanyCustomerForm(forms.ModelForm):
             company.save()
         return company
 
+    def clean_user_name(self):
+        username = self.cleaned_data.get('user_name')
+        validate_username(username)
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        validate_email(email)
+        return email
+
 
 class SignUpPersonCustomerForm(forms.ModelForm):
     user_name = forms.CharField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True, label='Usuario',
@@ -107,7 +117,7 @@ class SignUpPersonCustomerForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = ['email', 'address', 'person_id', 'first_name', 'last_name',
-                  'birth_date']
+                  'birth_date', 'user_name']
         error_messages = person_error_messages
 
     email = forms.EmailField(max_length=CHAR_GENERAL_MAX_LENGTH, required=True,
@@ -137,6 +147,16 @@ class SignUpPersonCustomerForm(forms.ModelForm):
             person.user = user
             person.save()
         return person
+
+    def clean_user_name(self):
+        username = self.cleaned_data.get('user_name')
+        validate_username(username)
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        validate_email(email)
+        return email
 
 
 class CreateVehicleForm(forms.ModelForm):
@@ -209,11 +229,13 @@ class CreateRentForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        start_date= cleaned_data.get("start_date")
-        end_date= cleaned_data.get("end_date")
-        if isinstance(start_date,datetime.date):
-            if isinstance(end_date,datetime.date):
-                if start_date>end_date:
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        if isinstance(start_date, date):
+            if start_date < date.today():
+                raise ValidationError("La fecha de inicio debe ser mayor o igual a la de hoy")
+            if isinstance(end_date, date):
+                if start_date > end_date:
                     raise ValidationError("La fecha de inicio debe ser menor que la fecha de fin")
         return cleaned_data
 

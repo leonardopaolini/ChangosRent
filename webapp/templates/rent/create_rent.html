@@ -30,11 +30,15 @@
             {{ form.vehicles }}
             <small class="text-danger">{{ form.vehicles.errors }}</small>
         </div>
-
+        {% if form.non_field_errors %}
+        <div class="form-group">
+            <small class="text-danger">{{ form.non_field_errors }}</small>
+        </div>
+        {% endif %}
         <button class="btn btn-primary btn-pill mr-2" type="submit">Guardar</button>
         <a class="btn btn-secondary btn-pill mr-2" href="{% url 'home' %}">Cancelar</a>
     </form>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
+    {% if form.non_field_errors %}
+        <p style="color: red;">{{ form.non_field_errors }}</p>
     {% endif %}
 {% endblock %}

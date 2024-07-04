@@ -5,7 +5,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from webapp.common.api.email_api_client import EmailMessage
-
+from django.core.exceptions import ValidationError
 
 def redirect_to_home():
     return redirect('home')
@@ -69,3 +69,14 @@ def sign_up_company_message(company, user):
 def include_in_customer_group(user):
     customer_group = Group.objects.get(name='Customers')
     user.groups.add(customer_group)
+
+
+def validate_username(username):
+    if User.objects.filter(username=username).exists():
+        raise ValidationError("El nombre del usuario ya existe.")
+
+
+def validate_email(email):
+    if User.objects.filter(email=email).exists():
+        raise ValidationError("El email ya se encuentra registrado.")
+
